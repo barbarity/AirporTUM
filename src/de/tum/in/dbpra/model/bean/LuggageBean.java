@@ -28,7 +28,7 @@ public class LuggageBean {
 	}
 	
 	public int getWeight() {
-		return id;
+		return weight;
 	}
 
 	public void setWeight(int weight) {

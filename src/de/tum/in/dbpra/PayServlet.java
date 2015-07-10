@@ -21,39 +21,12 @@ import java.sql.Date;
 
 
 @SuppressWarnings("serial")
-public class SearchServlet extends HttpServlet {
+public class PayServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-	
-		try {
-			ConnectionDAO connectionDAO = new ConnectionDAO();
-			CityDAO cityDao = new CityDAO();
-			
-			CityBean departureCity = new CityBean();
-			departureCity.setId(Integer.parseInt(request.getParameter("departureCity").trim()));
-			departureCity=cityDao.getCityById(departureCity);
-			
-			CityBean arrivalCity = new CityBean();
-			arrivalCity.setId(Integer.parseInt(request.getParameter("arrivalCity").trim()));
-			Date dateFrom = new Date(8, 6, 2015);
-			Date dateTo = new Date(8, 6, 2015);
-			
-			CurrencyBean currency = new CurrencyBean();
-			currency.setCurrencyCode("EUR");
-			currency.setName("Euros");
-			currency.setSymbol("€");
-			
-			ConnectionListBean connectionList = connectionDAO.getConnections(dateFrom, dateTo, departureCity, arrivalCity, "economy", currency);
-			
-			request.setAttribute("connectionList", connectionList);
-		
-		} catch(Throwable e){
-    		request.setAttribute("error", e.getMessage());
 
-    	}
-
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/searchFlight.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/pay.jsp");
 		dispatcher.forward(request, response);
 		
     }
