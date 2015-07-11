@@ -2,35 +2,52 @@ package de.tum.in.dbpra.model.bean;
 
 import java.sql.Date;
 import java.sql.Time;
-import org.postgresql.util.PGInterval;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 
 public class FlightBean {
 
-	private String flightId;
-	private Date date;
-	private Time localDepartureTime;
-	private Time localArrivalTime;
-	private PGInterval duration;
-	private AirportBean departureAirport;
-	private CityBean departureCity;
-	private AirportBean arrivalAirport;
-	private CityBean arrivalCity;
-	private int distance;
-	private String operatingFlightNumber;
-	private ArrayList<String> sharedFlightNumbers;
-	private String gateNr;
-	private BigDecimal price;
-	private String travelClass;
-	private String airplaneModel;
+	private int flightId;    
+	private Date date;  
+	private Time localDepartureTime;    
+	private Time localArrivalTime;  
+	private Time duration;    
+	private AirportBean departureAirport; 
+	private CityBean departureCity; 
+	private AirportBean arrivalAirport; 
+	private CityBean arrivalCity;   
+	private int distance;   
+	private String operatingFlightNumber;   
+        private String operatingAirline;    
+	private ArrayList<String> sharedFlightNumbers; 
+	private String gateNr;  
+	private BigDecimal price;   
+	private String travelClass; 
+	private String airplaneModel;   
+    private int routeId;        
+	private BigDecimal priceInDollar; //
 	
-
-	public String getFlightId() {
+	
+	
+	public BigDecimal getPriceInDollar(){
+		return priceInDollar;
+	}
+	public void setPriceInDollar(BigDecimal bd){
+		priceInDollar=bd;
+	}
+        
+        public int getRouteId(){
+            return routeId;
+        }
+        public void setRouteId(int routid){
+            routeId=routid;
+        }
+        
+	public int getFlightId() {
 		return flightId;
 	}
 
-	public void setFlightId(String flightId) {
+	public void setFlightId(int flightId) {
 		this.flightId = flightId;
 	}
 
@@ -41,7 +58,15 @@ public class FlightBean {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
+        
+        public String getOperatingAirline(){
+            return operatingAirline;
+        }
+        
+        public void setOperatingAirline(String s){
+            operatingAirline=s;
+        }
+        
 	public Time getLocalDepartureTime() {
 		return localDepartureTime;
 	}
@@ -58,11 +83,11 @@ public class FlightBean {
 		this.localArrivalTime = localArrivalTime;
 	}
 	
-	public PGInterval getDuration() {
+	public Time getDuration() {
 		return duration;
 	}
 
-	public void setDuration(PGInterval duration) {
+	public void setDuration(Time duration) {
 		this.duration = duration;
 	}
 	
@@ -154,3 +179,7 @@ public class FlightBean {
 		this.airplaneModel = airplaneModel;
 	}
 }
+
+            
+
+

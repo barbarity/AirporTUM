@@ -2,7 +2,7 @@ package de.tum.in.dbpra.model.bean;
 
 import java.util.ArrayList;
 import java.math.BigDecimal;
-import org.postgresql.util.PGInterval;
+import java.sql.Time;
 
 
 public class ConnectionBean {
@@ -10,7 +10,7 @@ public class ConnectionBean {
 	private ArrayList<FlightBean> flightList;
 	private CurrencyBean currency;
 	private BigDecimal overallPrice;
-	private PGInterval overallDuration;
+	private Time overallDuration;
 
 
 	public ArrayList<FlightBean> getFlightList() {
@@ -37,11 +37,11 @@ public class ConnectionBean {
 		this.overallPrice=overallPrice;
 	}
 	
-	public PGInterval getOverallDuration() {
+	public Time getOverallDuration() {
 		return overallDuration;
 	}
 
-	public void setOverallDuration(PGInterval overallDuration) {
+	public void setOverallDuration(Time overallDuration) {
 		this.overallDuration=overallDuration;
 	}
 }

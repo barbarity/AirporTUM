@@ -12,4 +12,8 @@ public class CurrencyListBean {
 	public void setCurrencyList(ArrayList<CurrencyBean> currencyList) {
 		this.currencyList=currencyList;
 	}
+	
+	public void addCurrencyToList(CurrencyBean currency) {
+		currencyList.add(currency);
+	}
 }

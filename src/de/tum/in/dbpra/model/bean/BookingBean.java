@@ -2,6 +2,7 @@ package de.tum.in.dbpra.model.bean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class BookingBean {
 
@@ -12,7 +13,7 @@ public class BookingBean {
 	private CurrencyBean currency;
 	private ArrayList<LuggageBean> luggageList;
 	private AirlineBean bookedAtAirline;
-	
+	private Date bookingTimestamp;
 
 	public String getId() {
 		return id;
@@ -68,6 +69,14 @@ public class BookingBean {
 
 	public void setBookedAtAirline(AirlineBean bookedAtAirline) {
 		this.bookedAtAirline = bookedAtAirline;
+	}
+	
+	public Date getBookingTimestamp(){
+		return bookingTimestamp;
+	}
+	
+	public void setBookingTimestamp(Date bookingTimestamp){
+		this.bookingTimestamp = bookingTimestamp;
 	}
 	
 }
