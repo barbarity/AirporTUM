@@ -25,7 +25,7 @@ public class ConnectionDAO extends AbstractDAO {
 		ArrayList<FlightBean> flights = new ArrayList<FlightBean>();
 		
 		FlightBean flightBean1 = new FlightBean();
-		flightBean1.setFlightId("TR1012");
+		flightBean1.setFlightId(1012);
 		flightBean1.setDepartureCity(departureCity);
 		flightBean1.setArrivalCity(arrivalCity);
 		
@@ -43,7 +43,7 @@ public class ConnectionDAO extends AbstractDAO {
 		ArrayList<FlightBean> flights2 = new ArrayList<FlightBean>();
 		
 		FlightBean flightBean2 = new FlightBean();
-		flightBean2.setFlightId("FK7987");
+		flightBean2.setFlightId(7987);
 		flightBean2.setDate(dateFrom);
 		flightBean2.setDepartureCity(departureCity);
 		flightBean2.setArrivalCity(arrivalCity);
