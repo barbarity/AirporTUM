@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class FlightSegmentTicketBean {
 
+	private int id;
 	private FlightBean flight;
 	private FoodTypeBean foodType;
 	private int seatNr;
@@ -12,6 +13,14 @@ public class FlightSegmentTicketBean {
 	private String travelClass;
 	
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public FlightBean getFlight() {
 		return flight;
 	}

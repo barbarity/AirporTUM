@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 public class LuggageBean {
 
 	private int id;
+	private int bookingId;
 	private int weight;
 	private int height;
 	private int width;
@@ -25,6 +26,14 @@ public class LuggageBean {
 
 	public void setId(int id) {
 		this.id=id;
+	}
+	
+	public int getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(int bookingId) {
+		this.bookingId=bookingId;
 	}
 	
 	public int getWeight() {

@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class BookingBean {
 
-	private String id;
+	private int id;
 	private ArrayList<FlightSegmentTicketBean> flightSegmentTicketList;
 	private PersonBean person;
 	private BigDecimal price;
@@ -15,11 +15,11 @@ public class BookingBean {
 	private AirlineBean bookedAtAirline;
 	private Date bookingTimestamp;
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
