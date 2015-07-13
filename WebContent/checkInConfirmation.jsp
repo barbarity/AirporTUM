@@ -23,10 +23,7 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
-logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %> <form action="login" method="post">
-							<input type="hidden" name="logoutUser" value="<%= checkinworker.getEmail() %>" />							
-							<button type="submit">Logout</button>
-				</form>
+logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 	<div class="container">
 		<div class="row">
 				<div class="col-sm-4">
@@ -169,40 +166,16 @@ logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 				<div class="col-sm-1">
 					<%= luggageItem.getAdditionalPrice() %>
 				</div>
-				<div class="col-sm-1">
-				<form action="bookingOverview" method="post">
-							<input type="hidden" name="edit" value="<%= luggageItem.getId() %>" />
-							<button type="submit">Edit</button>
-				</form>
-				<form action="bookingOverview" method="post">
-							<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
-							<input type="hidden" name="deleteLuggage" value="<%= luggageItem.getId() %>" />
-							<button type="submit">Delete</button>
-				</form>
-				</div>
+				
 		</div>
 
 <% } %>
 
-<form action="bookingOverview" method="post">
-							<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
-							<input type="hidden" name="rollback" value="<%= 1 %>" />
-							<button type="submit">Rollback</button>
-				</form>
-				
-				<form action="bookingOverview" method="post">
-							<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
-							<input type="hidden" name="addNewLuggage" value="<%= 1 %>" />
-							<button type="submit">Add new Luggage Item</button>
-				</form>
+
 				
 				
 				<div class="col-sm-2">
-					<form action="bookingOverview" method="post">	
-						<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
-						<input type="hidden" name="commit" value="<%= 1 %>" />
-						<button type="submit">Finish check-in</button>
-					</form>
+					<a href="/AirportTUM/login">Check in another booking</a>
 				</div>
 
 

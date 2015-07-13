@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 
 import de.tum.in.dbpra.model.bean.BookingBean;
 import de.tum.in.dbpra.model.bean.LuggageBean;
+import de.tum.in.dbpra.model.bean.PersonBean;
 
 
 import de.tum.in.dbpra.model.dao.PersonDAO;
@@ -50,7 +51,14 @@ public class BookingOverviewServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
+PersonBean checkinworker = Authenticator.authenticate(request);
 		
+		if(checkinworker != null){
+			//checkinworker already logged in! Thus, everything is fine.
+			request.setAttribute("checkinworker", checkinworker);
+
+
+    
 		
 		
     	try{
@@ -181,11 +189,33 @@ try{
     	
     }
     
+    
+    else if(request.getParameter("commit") != null){
+    	try{
+    		con.commit();
+    		
+	}catch(Throwable e){
+		request.setAttribute("error", e.getMessage());
+	}
+    	
+	RequestDispatcher dispatcher = request.getRequestDispatcher("/checkInConfirmation.jsp");
+	dispatcher.forward(request, response);
+}
+    
     else{
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/bookingOverview.jsp");
 		dispatcher.forward(request, response);
     }
 		
+    
+    
+		}		
+		else{
+			//checkinworker not logged in (no cookie found). 
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
+			dispatcher.forward(request, response);
+			}
+    
 		
     }
     
@@ -194,7 +224,7 @@ try{
     	
     	
 
-	RequestDispatcher dispatcher = request.getRequestDispatcher("/bookingOverview.jsp");
+	RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
 	dispatcher.forward(request, response);
     
 

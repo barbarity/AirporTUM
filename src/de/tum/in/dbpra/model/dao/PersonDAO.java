@@ -51,7 +51,7 @@ public class PersonDAO extends AbstractDAO {
 		
 	}
 	
-	public PersonBean getPerson(String email, String password) throws PersonNotFoundException, SQLException {
+	public PersonBean getPerson(String email, String passwordHashed) throws PersonNotFoundException, SQLException {
 		
 		String querySalt = "SELECT salt from person where email=?";
 		
@@ -73,9 +73,7 @@ public class PersonDAO extends AbstractDAO {
 				throw e;
 			}
 		
-		
-		String passwordHashed = sha256(password+salt);
-				
+					
 		
 		String query = "SELECT 	person_id, firstName, lastName, passportId, gender, title, address, email, phone, birthdate, password, salt from person where email=? and password = ?";
 	
@@ -119,7 +117,7 @@ public class PersonDAO extends AbstractDAO {
 	
 	
 	
-	public PersonBean getCheckInWorker(String email, String password) throws PersonNotFoundException, SQLException {
+	public PersonBean getCheckInWorker(String email, String passwordHashed) throws PersonNotFoundException, SQLException {
 		
 		
 		String querySalt = "SELECT * from checkinworker, person  where cw_id=person_id and email= ?";
@@ -132,7 +130,7 @@ public class PersonDAO extends AbstractDAO {
 				try (ResultSet resultSet = preparedStatement.executeQuery();) {
 					if (resultSet.next()) {
 						//it is a checkin-worker
-						checkinworker = getPerson(email, password);
+						checkinworker = getPerson(email, passwordHashed);
 					} 
 					resultSet.close();
 				} catch (SQLException e) {
@@ -145,6 +143,33 @@ public class PersonDAO extends AbstractDAO {
 			}
 		
 		return checkinworker;
+	}
+	
+	
+	public String getSha256Hash(String email, String password) throws PersonNotFoundException, SQLException{
+		
+String querySalt = "SELECT * from person where email= ?";
+				String hash=null;
+		try (Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(querySalt);) {
+				preparedStatement.setString(1, email);
+				try (ResultSet resultSet = preparedStatement.executeQuery();) {
+					if (resultSet.next()) {
+						String salt = resultSet.getString(12);
+						hash = sha256(password+salt);
+					} 
+					resultSet.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw e;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		
+		return hash;
+		
 	}
 	
 	

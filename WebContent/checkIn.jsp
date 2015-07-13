@@ -1,5 +1,9 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="de.tum.in.dbpra.model.bean.PersonBean"%>
+
+
+<jsp:useBean id="checkinworker" scope="request" class="de.tum.in.dbpra.model.bean.PersonBean" />
 
 
 <!DOCTYPE html>
@@ -16,6 +20,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script> --> 
 </head>
 <body>
+logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>  <form action="login" method="post">
+							<input type="hidden" name="logoutUser" value="<%= checkinworker.getEmail() %>" />							
+							<button type="submit">Logout</button>
+				</form>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-7">
