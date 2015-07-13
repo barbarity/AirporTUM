@@ -27,6 +27,13 @@ logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 							<input type="hidden" name="logoutUser" value="<%= checkinworker.getEmail() %>" />							
 							<button type="submit">Logout</button>
 				</form>
+				
+				<% if(booking.getBookingTimestamp()==null){ %>
+					No valid booking id! please <a href="/AirportTUM/login">try again</a>
+				<% }else if(booking.getCheckedInOn()!=null){ %>
+					This has already been checked in! <a href="/AirportTUM/login">Check in another booking</a>
+				<% }else{ %>
+				
 	<div class="container">
 		<div class="row">
 				<div class="col-sm-4">
@@ -205,6 +212,7 @@ logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 					</form>
 				</div>
 
+				<% } %>
 
 </body>
 </html>
