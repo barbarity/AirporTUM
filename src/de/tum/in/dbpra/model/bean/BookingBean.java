@@ -14,7 +14,8 @@ public class BookingBean {
 	private ArrayList<LuggageBean> luggageList;
 	private AirlineBean bookedAtAirline;
 	private Date bookingTimestamp;
-
+	private Date checkedInOn;
+	
 	public int getId() {
 		return id;
 	}
@@ -77,6 +78,14 @@ public class BookingBean {
 	
 	public void setBookingTimestamp(Date bookingTimestamp){
 		this.bookingTimestamp = bookingTimestamp;
+	}
+	
+	public Date getCheckedInOn(){
+		return checkedInOn;
+	}
+	
+	public void setCheckedInOn(Date checkedInOn){
+		this.checkedInOn = checkedInOn;
 	}
 	
 }

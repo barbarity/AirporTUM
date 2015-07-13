@@ -167,7 +167,7 @@ logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 					<%= luggageItem.getLength() %>
 				</div>
 				<div class="col-sm-1">
-					<%= luggageItem.getAdditionalPrice() %>
+					<%= luggageItem.getAdditionalPrice() %> <%= booking.getCurrency().getSymbol() %>
 				</div>
 				<div class="col-sm-1">
 				<form action="bookingOverview" method="post">

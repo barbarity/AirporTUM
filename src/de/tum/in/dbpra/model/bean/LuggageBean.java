@@ -3,7 +3,7 @@ package de.tum.in.dbpra.model.bean;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
-public class LuggageBean {
+public class LuggageBean implements Cloneable{
 
 	private int id;
 	private int bookingId;
@@ -12,8 +12,6 @@ public class LuggageBean {
 	private int width;
 	private int length;
 	private BigDecimal additionalPrice;
-	private Timestamp checkedInOn;
-	private PersonBean checkInWorker;
 	private boolean registeredAtBooking;
 
 
@@ -76,28 +74,17 @@ public class LuggageBean {
 		this.additionalPrice=additionalPrice;
 	}
 	
-	public Timestamp getCheckedInOn() {
-		return checkedInOn;
-	}
-
-	public void setCheckedInOn(Timestamp checkedInOn) {
-		this.checkedInOn=checkedInOn;
-	}
-	
-	public PersonBean getCheckInWorker() {
-		return checkInWorker;
-	}
-
-	public void setCheckInWorker(PersonBean checkInWorker) {
-		this.checkInWorker=checkInWorker;
-	}
-	
 	public boolean getRegisteredAtBooking() {
 		return registeredAtBooking;
 	}
 
 	public void setRegisteredAtBooking(boolean registeredAtBooking) {
 		this.registeredAtBooking=registeredAtBooking;
+	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException{
+		return super.clone();
 	}
 	
 }

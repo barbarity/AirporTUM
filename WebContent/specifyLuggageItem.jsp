@@ -2,9 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@page import="de.tum.in.dbpra.model.bean.LuggageBean"%>
 <%@page import="de.tum.in.dbpra.model.bean.PersonBean"%>
+<%@page import="de.tum.in.dbpra.model.bean.BookingBean"%>
 
 
 <jsp:useBean id="luggage" scope="request" class="de.tum.in.dbpra.model.bean.LuggageBean" />
+<jsp:useBean id="booking" scope="request" class="de.tum.in.dbpra.model.bean.BookingBean" />
+
 <jsp:useBean id="checkinworker" scope="request" class="de.tum.in.dbpra.model.bean.PersonBean" />
 
 
@@ -35,22 +38,21 @@ logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 						<div class="form-group">
 							<label for="weight">Weight</label>
 							<input type="text" class="form-control" name="weight" id="weight" value="<%= luggage.getWeight() %>" placeholder="weight">
-						</div>
+						</div> g
 						<div class="form-group">
 							<label for="height">Height</label>
 							<input type="text" class="form-control" name="height" id="height" value="<%= luggage.getHeight() %>" placeholder="height">
-						</div>
+						</div> cm
 						<div class="form-group">
 							<label for="width">Width</label>
 							<input type="text" class="form-control" name="width" id="width" value="<%= luggage.getWidth() %>" placeholder="width">
-						</div>
+						</div> cm
 						<div class="form-group">
 							<label for="length">Length</label>
 							<input type="text" class="form-control" name="length" id="length" value="<%= luggage.getLength() %>" placeholder="length">
-						</div>
-						<%= luggage.getAdditionalPrice() %>
-													<input type="hidden" name="luggageId" value="<%= luggage.getId() %>" />
-				
+						</div> cm
+						<%= luggage.getAdditionalPrice() %> <%= booking.getCurrency().getSymbol() %>
+							<input type="hidden" name="luggageId" value="<%= luggage.getId() %>" />
 							<button type="submit" name="calculateCostButton" value="1">Calculate Additional Cost</button>
 							<button type="submit" name="addLuggage" value="1">OK</button>
 							

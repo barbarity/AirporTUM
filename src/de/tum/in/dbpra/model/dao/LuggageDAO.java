@@ -17,9 +17,12 @@ public class LuggageDAO extends AbstractDAO {
 	public LuggageDAO(Connection con){
 		this.connection=con;
 	}
+	public LuggageDAO(){
+		this.connection=null;
+	}
 
-	public ArrayList<LuggageBean> getLuggageItemsOfBooking(BookingBean booking) throws LuggageNotFoundException, SQLException {
-		String query = "SELECT luggage_id, booking_id, weight, height, width, length, additionalcost from luggage where booking_id = ?";
+	public ArrayList<LuggageBean> getLuggageItemsOfBooking(BookingBean booking) throws LuggageNotFoundException, PersonDAO.PersonNotFoundException, SQLException {
+		String query = "SELECT luggage_id, booking_id, weight, height, width, length, additionalcost, registeredAtBooking  from luggage where booking_id = ? order by luggage_id";
 				
 		ArrayList<LuggageBean> luggageItems = new ArrayList<LuggageBean>();
 		/*try (Connection connection = getConnection();
@@ -27,6 +30,7 @@ public class LuggageDAO extends AbstractDAO {
 			 */
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, booking.getId());
+			
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
 				while (resultSet.next()) {
 					LuggageBean luggageItem = new LuggageBean();
@@ -36,6 +40,8 @@ public class LuggageDAO extends AbstractDAO {
 					luggageItem.setWidth(resultSet.getInt(5));
 					luggageItem.setLength(resultSet.getInt(6));
 					luggageItem.setAdditionalPrice(resultSet.getBigDecimal(7));
+					luggageItem.setRegisteredAtBooking(resultSet.getBoolean(8));
+
 					luggageItems.add(luggageItem);
 				} 
 				resultSet.close();
@@ -77,13 +83,15 @@ public class LuggageDAO extends AbstractDAO {
 		*/
 		return false;
 	}
+
 	
-	public LuggageBean getLuggageById(LuggageBean luggageItem) throws LuggageNotFoundException, SQLException {
-		String query = "select * from luggage where luggage_id = ?";
+	public LuggageBean getLuggageById(LuggageBean luggageItem) throws LuggageNotFoundException, PersonDAO.PersonNotFoundException, SQLException {
+		String query = "select luggage_id, booking_id, weight, height, width, length, additionalcost, registeredAtBooking from luggage where luggage_id = ?";
 				
 		/*try (Connection connection = getConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
 			 */
+
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.setInt(1, luggageItem.getId());
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
@@ -94,6 +102,8 @@ public class LuggageDAO extends AbstractDAO {
 					luggageItem.setWidth(resultSet.getInt(5));
 					luggageItem.setLength(resultSet.getInt(6));
 					luggageItem.setAdditionalPrice(resultSet.getBigDecimal(7));
+					luggageItem.setRegisteredAtBooking(resultSet.getBoolean(8));
+		
 				} 
 				resultSet.close();
 			} catch (SQLException e) {
@@ -141,7 +151,7 @@ public class LuggageDAO extends AbstractDAO {
 	
 	
 	public LuggageBean addNewLuggageItem(LuggageBean luggageItem) throws LuggageNotFoundException, SQLException {
-		String query = "insert into luggage values((select max(luggage_id)+1 from luggage), ?, ?, ?, ?, ?, ?)";
+		String query = "insert into luggage values((select max(luggage_id)+1 from luggage), ?, ?, ?, ?, ?, ?, ?)";
 		/*try (Connection connection = getConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
 			 */
@@ -153,6 +163,7 @@ public class LuggageDAO extends AbstractDAO {
 			preparedStatement.setInt(4, luggageItem.getWidth());
 			preparedStatement.setInt(5, luggageItem.getLength());
 			preparedStatement.setBigDecimal(6, luggageItem.getAdditionalPrice());
+			preparedStatement.setBoolean(7, luggageItem.getRegisteredAtBooking());
 			try {
 				int rows = preparedStatement.executeUpdate();
 				if (rows == 1){
@@ -183,6 +194,40 @@ public class LuggageDAO extends AbstractDAO {
 		return null;
 	}
 	
+	
+	
+	public LuggageBean getOldLuggageItem(LuggageBean luggageItem) throws LuggageNotFoundException, SQLException {
+		String query = "select luggage_id, booking_id, weight, height, width, length, additionalcost, registeredAtBooking from luggage where luggage_id = ?";
+		
+		LuggageBean oldLuggageItem = null;
+		try{
+		oldLuggageItem = (LuggageBean) luggageItem.clone();
+		}catch(CloneNotSupportedException e){
+			return null;
+		}
+		
+		try (Connection connection = getConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+			preparedStatement.setInt(1, oldLuggageItem.getId());
+			try (ResultSet resultSet = preparedStatement.executeQuery();) {
+				if (resultSet.next()) {
+					oldLuggageItem.setBookingId(resultSet.getInt(2));
+					oldLuggageItem.setWeight(resultSet.getInt(3));
+					oldLuggageItem.setHeight(resultSet.getInt(4));
+					oldLuggageItem.setWidth(resultSet.getInt(5));
+					oldLuggageItem.setLength(resultSet.getInt(6));
+					oldLuggageItem.setAdditionalPrice(resultSet.getBigDecimal(7));
+					oldLuggageItem.setRegisteredAtBooking(resultSet.getBoolean(8));
+				} 
+				resultSet.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+	}
+		return oldLuggageItem;
+
+	}
 	
 	@SuppressWarnings("serial")
 	public static class LuggageNotFoundException extends Throwable {

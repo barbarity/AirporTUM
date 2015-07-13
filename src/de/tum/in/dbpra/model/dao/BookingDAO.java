@@ -25,7 +25,7 @@ public class BookingDAO extends AbstractDAO {
 	public BookingBean getBookingById(int id) throws BookingNotFoundException, PersonDAO.PersonNotFoundException, AirlineDAO.AirlineNotFoundException, FoodTypeDAO.FoodTypeNotFoundException, LuggageDAO.LuggageNotFoundException, CurrencyDAO.CurrencyNotFoundException, FlightSegmentTicketDAO.BookingNotFoundException,FlightDAO.FlightNotFoundException, SQLException {
 		
 		
-		String query = "SELECT booking_id, customer_id, airline_code, price, currency_code, bookingTimestamp " +
+		String query = "SELECT booking_id, customer_id, airline_code, price, currency_code, bookingTimestamp, checkedInOn " +
 				"from booking " +
 				"WHERE booking_id = ?" ;	
 				
@@ -51,7 +51,7 @@ public class BookingDAO extends AbstractDAO {
 					person.setId(resultSet.getInt(2));
 					
 					PersonDAO personDao = new PersonDAO();
-					personDao.getCustomerById(person);
+					personDao.getPersonById(person);
 					
 					
 					
@@ -85,7 +85,7 @@ public class BookingDAO extends AbstractDAO {
 					booking.setCurrency(currency);
 					booking.setPerson(person);
 					booking.setBookingTimestamp(resultSet.getDate(6));
-					
+					booking.setCheckedInOn(resultSet.getDate(7));
 					
 					
 

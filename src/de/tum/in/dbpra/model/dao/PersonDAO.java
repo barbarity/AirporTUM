@@ -14,7 +14,7 @@ import de.tum.in.dbpra.model.bean.PersonBean;
 public class PersonDAO extends AbstractDAO {
 
 	
-	public PersonBean getCustomerById(PersonBean person) throws PersonNotFoundException, SQLException {
+	public PersonBean getPersonById(PersonBean person) throws PersonNotFoundException, SQLException {
 		
 		String query = "SELECT 	person_id, firstName, lastName, passportId, gender, title, address, email, phone, birthdate, password, salt from person where person_id = ?";
 		
@@ -23,7 +23,6 @@ public class PersonDAO extends AbstractDAO {
 				preparedStatement.setInt(1, person.getId());
 				try (ResultSet resultSet = preparedStatement.executeQuery();) {
 					if (resultSet.next()) {
-						//it is a checkin-worker
 						person.setFirstName(resultSet.getString(2));
 						person.setLastName(resultSet.getString(3));
 						person.setPassportId(resultSet.getString(4));
@@ -144,6 +143,9 @@ public class PersonDAO extends AbstractDAO {
 		
 		return checkinworker;
 	}
+	
+	
+
 	
 	
 	public String getSha256Hash(String email, String password) throws PersonNotFoundException, SQLException{
