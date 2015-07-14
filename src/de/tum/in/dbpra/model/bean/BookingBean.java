@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class BookingBean {
 
-	private String id;
+	private int id;
 	private ArrayList<FlightSegmentTicketBean> flightSegmentTicketList;
 	private PersonBean person;
 	private BigDecimal price;
@@ -14,12 +14,13 @@ public class BookingBean {
 	private ArrayList<LuggageBean> luggageList;
 	private AirlineBean bookedAtAirline;
 	private Date bookingTimestamp;
-
-	public String getId() {
+	private Date checkedInOn;
+	
+	public int getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -70,13 +71,21 @@ public class BookingBean {
 	public void setBookedAtAirline(AirlineBean bookedAtAirline) {
 		this.bookedAtAirline = bookedAtAirline;
 	}
-	
+		
 	public Date getBookingTimestamp(){
 		return bookingTimestamp;
 	}
 	
 	public void setBookingTimestamp(Date bookingTimestamp){
 		this.bookingTimestamp = bookingTimestamp;
+	}
+	
+	public Date getCheckedInOn(){
+		return checkedInOn;
+	}
+	
+	public void setCheckedInOn(Date checkedInOn){
+		this.checkedInOn = checkedInOn;
 	}
 	
 }

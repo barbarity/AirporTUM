@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
 package de.tum.in.dbpra.model.dao;
 
 import java.sql.Connection;
@@ -6,12 +11,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.math.BigDecimal;
+import java.sql.Time;
+<<<<<<< HEAD
 import java.sql.Timestamp;
+=======
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
 
 import de.tum.in.dbpra.model.bean.FlightBean;
 import de.tum.in.dbpra.model.bean.CityBean;
 import de.tum.in.dbpra.model.bean.AirportBean;
+<<<<<<< HEAD
+=======
 import de.tum.in.dbpra.model.bean.AirlineBean;
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
 
 
 public class FlightDAO extends AbstractDAO {
@@ -19,9 +31,13 @@ public class FlightDAO extends AbstractDAO {
 	
 	
 	public FlightBean getFlightById(FlightBean fb) throws FlightNotFoundException, SQLException {
-
+<<<<<<< HEAD
+		String query = "select f.*, r.*, r.departureTime+cstart.timezone, r.departureTime+r.duration+cend.timezone, cstart.*, cend.*, astart.*, aend.* from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend "
+ +"where astart.iata=r.departure_iata and aend.iata=arrival_iata and aend.city_id=cend.city_id and astart.city_id=cstart.city_id and f.route_id=r.route_id and f.flight_id=? ";
+=======
 		String query = "select f.*, r.*, r.departureTime+cstart.timezone, r.departureTime+r.duration+cend.timezone, cstart.*, cend.*, astart.*, aend.*, a.code, a.name from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, Airline a "
  +"where astart.iata=r.departure_iata and aend.iata=arrival_iata and aend.city_id=cend.city_id and astart.city_id=cstart.city_id and f.route_id=r.route_id and r.airline_code = a.code and f.flight_id=? ";
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
 				
 		try (Connection connection = getConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
@@ -36,10 +52,14 @@ public class FlightDAO extends AbstractDAO {
                     fb.setLocalArrivalTime(resultSet.getTime(19));
                     fb.setDuration(resultSet.getTime(15));
                     fb.setGateNr(resultSet.getString(7));
+<<<<<<< HEAD
+                    fb.setOperatingAirline(resultSet.getString(13));
+=======
                     AirlineBean airline = new AirlineBean();
                     airline.setCode(resultSet.getString(36));
                     airline.setName(resultSet.getString(37));
                     fb.setOperatingAirline(airline);
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
                     AirportBean ap=new AirportBean();
                     AirportBean ap2=new AirportBean();
                     ap.setIATA(resultSet.getString(30));
@@ -60,7 +80,10 @@ public class FlightDAO extends AbstractDAO {
                     fb.setArrivalCity(ct2);
                     fb.setDistance(resultSet.getInt(17));
                     fb.setOperatingFlightNumber(resultSet.getString(12));
+<<<<<<< HEAD
+=======
                     setSharedFlightNumbersForFlight(fb);
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
 				} 
 				else{
 					throw new FlightNotFoundException("Database found no flight for the given id!");
@@ -81,7 +104,7 @@ public class FlightDAO extends AbstractDAO {
 
 	//free seats!!!!!!!!!!!!!
     
-
+<<<<<<< HEAD
     ArrayList<FlightBean> getFlightsFromTo(Timestamp timeFrom, Timestamp timeTo,
     AirportBean start, AirportBean end, String flightClass,int numberPersons) throws SQLException{
     	System.out.println("In the getFlightsFromTo-Method:");
@@ -92,33 +115,56 @@ public class FlightDAO extends AbstractDAO {
     	System.out.println("    end_airport:  "+end.getIATA());
     	System.out.println("    flightClass:  "+flightClass);
     	System.out.println("    persons:      "+numberPersons);
-
+    	
+    	
+=======
+    ArrayList<FlightBean> getFlightsFromTo(Time timeFrom, Time timeTo,
+    AirportBean start, AirportBean end, String flightClass,int numberPersons) throws SQLException{
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
         String query;
         if(flightClass.compareTo("economy")==0){
         	query="with takenseats as (select fl.flight_id as fl,  coalesce(count(fst.fst_id),0) as seats from Airplane ap, Flight fl left outer join (select * from FlightSegmentTicket where class='economy') fst on (fst.flight_id=fl.flight_id) where ap.registration_num=fl.airplane_registration_num  group by fl.flight_id)"
         			+
 
-        		"select *,f.date+r.departureTime+r.duration-cend.timezone as locArrTime,f.date+r.departureTime-cstart.timezone as locDepTime from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "
+<<<<<<< HEAD
+        		"select *,f.date+r.departureTime+r.duration-cend.timezone as locArrTime,f.date+r.departureTime-cstart.timezone as locDepTime  from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap where departure_iata=? "
+        		        +"        and f.date+r.departureTime-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and" 
+        		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.economyClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num";
+=======
+        		"select * from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "
         		        +"        and f.date+r.departureTime-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and" 
         		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.economyClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num and r.airline_code=a.code";
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
 
         }
         else if(flightClass.compareTo("business")==0){
         	query="with takenseats as (select fl.flight_id as fl,  coalesce(count(fst.fst_id),0) as seats from Airplane ap, Flight fl left outer join (select * from FlightSegmentTicket where class='business') fst on (fst.flight_id=fl.flight_id) where ap.registration_num=fl.airplane_registration_num  group by fl.flight_id)"
         			+
-        			
-        		"select *,f.date+r.departureTime+r.duration-cend.timezone as locArrTime,f.date+r.departureTime-cstart.timezone as locDepTime from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "
+
+<<<<<<< HEAD
+        		"select *,f.date+r.departureTime+r.duration-cend.timezone as locArrTime,f.date+r.departureTime-cstart.timezone as locDepTime  from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap where departure_iata=? "
+        		        +"        and f.date+r.departureTime-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and" 
+        		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.businessClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num";
+=======
+        		"select * from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "
         		        +"        and f.date+r.departureTime-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and" 
         		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.businessClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num  and r.airline_code=a.code";
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
 
         }
         else{
         	query="with takenseats as (select fl.flight_id as fl,  coalesce(count(fst.fst_id),0) as seats from Airplane ap, Flight fl left outer join (select * from FlightSegmentTicket where class='first') fst on (fst.flight_id=fl.flight_id) where ap.registration_num=fl.airplane_registration_num  group by fl.flight_id)"
         			+
 
-        		"select *,f.date+r.departureTime+r.duration-cend.timezone as locArrTime,f.date+r.departureTime-cstart.timezone as locDepTime from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "
+<<<<<<< HEAD
+        		"select *,f.date+r.departureTime+r.duration-cend.timezone as locArrTime,f.date+r.departureTime-cstart.timezone as locDepTime from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap where departure_iata=? "
+        		        +"        and f.date+r.departureTime-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and" 
+        		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.firstClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num";
+=======
+        		"select * from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "
         		        +"        and f.date+r.departureTime-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and" 
         		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.firstClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num  and r.airline_code=a.code";
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
 
   
         }
@@ -129,9 +175,13 @@ public class FlightDAO extends AbstractDAO {
             con.setAutoCommit(true);//read only
             PreparedStatement prep = con.prepareStatement(query);
             prep.setString(1, start.getIATA());
+<<<<<<< HEAD
             prep.setTimestamp(2, timeTo);
             prep.setTimestamp(3, timeFrom);
-
+=======
+            prep.setTime(2, timeTo);
+            prep.setTime(3, timeFrom);
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
             prep.setString(4, end.getIATA());
             prep.setInt(5, numberPersons);
             try{
@@ -145,10 +195,14 @@ public class FlightDAO extends AbstractDAO {
                     fb.setLocalArrivalTime(rs.getTime("locArrTime"));
                     fb.setDuration(rs.getTime(15));
                     fb.setGateNr(rs.getString(7));
+<<<<<<< HEAD
+                    fb.setOperatingAirline(rs.getString(13));
+=======
                     AirlineBean airline = new AirlineBean();
                     airline.setCode(rs.getString(42));
                     airline.setName(rs.getString(44));
                     fb.setOperatingAirline(airline);
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
                     AirportBean ap=new AirportBean();
                     AirportBean ap2=new AirportBean();
                     ap.setIATA(rs.getString(28));
@@ -156,7 +210,11 @@ public class FlightDAO extends AbstractDAO {
                     ap2.setIATA(rs.getString(31));
                     ap2.setName(rs.getString(32));
                     fb.setDepartureAirport(ap);
+<<<<<<< HEAD
                     fb.setArrivalAirport(ap2);
+=======
+                    fb.setArrivalAirport(ap);
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
                     CityBean ct=new CityBean();
                     CityBean ct2=new CityBean();
                     ct.setId(rs.getInt(18));
@@ -174,22 +232,37 @@ public class FlightDAO extends AbstractDAO {
                     
                 }
             }catch(SQLException e){
+<<<<<<< HEAD
                 System.out.println(e.getMessage());
-
-                System.out.println("An error occured in the FlightDAO while processing the query");
                 
+=======
+                System.out.println("An error occured in the FlightDAO while processing the query");
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
                 throw e;
             }
             
         }
         catch(SQLException e){
+<<<<<<< HEAD
             System.out.println(e.getMessage());
             throw e;
         }
-
+        System.out.println("setAirplaneModel:");
+        setAirplaneModels(al);
+        System.out.println("setSharedFlightNumber:");
+        setSharedFlightNumbers(al);
+        System.out.println("setPrice:");
+        setPrice(al,flightClass);
+        System.out.println("FlightDAO exited");
+=======
+            System.out.println("An error in the FlightDAO occured.");
+            throw e;
+        }
+            
         setAirplaneModels(al);
         setSharedFlightNumbers(al);
         setPrice(al,flightClass);
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
         return al;
     }
     private void setAirplaneModels(ArrayList<FlightBean> al)throws SQLException{
@@ -218,16 +291,41 @@ public class FlightDAO extends AbstractDAO {
             System.out.println(e.getMessage());
             throw e;
         }
-    }    
+    }
+<<<<<<< HEAD
+    private void setSharedFlightNumbers(ArrayList<FlightBean> al)throws SQLException{
+        String query="select s.flight_number, s.airline_code from sharedFlightNumbers s where s.route_id=?";
+=======
+    
     
     private void setSharedFlightNumbersForFlight(FlightBean flight) throws SQLException{
     	
     		String query="select s.flight_number, s.airline_code from sharedFlightNumbers s where s.route_id=?";
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
     
+        
         try{
             Connection con = getConnection();
             con.setAutoCommit(true);//read only
             PreparedStatement prep = con.prepareStatement(query);
+            
+       
+<<<<<<< HEAD
+            for(int i=0;i<al.size();i++){
+            
+                FlightBean fb=al.get(i);
+                ArrayList<String> sfnl=new ArrayList<String>(); //sharedFlightNumbersList
+                prep.setInt(1,fb.getRouteId());
+                ResultSet rs=prep.executeQuery();
+                while(rs.next()){
+                    sfnl.add(rs.getString(1)+rs.getString(2));
+                }
+                fb.setSharedFlightNumbers(sfnl);
+                al.set(i, fb);
+            
+            }
+=======
+            
             
                 ArrayList<String> sfnl=new ArrayList<String>(); //sharedFlightNumbersList
                 prep.setInt(1,flight.getRouteId());
@@ -237,9 +335,17 @@ public class FlightDAO extends AbstractDAO {
                 }
                 flight.setSharedFlightNumbers(sfnl);            
             
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
         }catch(SQLException e){
             System.out.println(e.getMessage());
+            throw e;
         }
+<<<<<<< HEAD
+    }
+    private void setPrice(ArrayList<FlightBean> al,String fc)throws SQLException{
+        String query="select price_in_dollar from city c, country co, currency cu where c.country_code=co.country_code and co.currency_code=cu.currency_code and c.city_id=?";
+    
+=======
     	
     }
     
@@ -266,6 +372,7 @@ public class FlightDAO extends AbstractDAO {
             System.out.println(e.getMessage());
             return;
         }   
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
         
         try{
             Connection con = getConnection();
@@ -284,8 +391,11 @@ public class FlightDAO extends AbstractDAO {
                     double helper=1;
                     helper=helper*((double)fb.getDistance());
                     helper=helper+0.1*(double)obscureHash(fb.getAirplaneModel());
+<<<<<<< HEAD
+                    helper=helper+0.3*(double)obscureHash(fb.getOperatingAirline());
+=======
                     helper=helper+0.3*(double)obscureHash(fb.getOperatingAirline().getCode());
-                    
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
                     if(fc.compareTo("business")==0){
                     	helper=helper*1.5;
                     }
@@ -293,12 +403,17 @@ public class FlightDAO extends AbstractDAO {
                     	helper=helper*2;
                     }
                     BigDecimal bd=new BigDecimal(helper);
-
+<<<<<<< HEAD
                     bd.setScale(2,BigDecimal.ROUND_UP);
                     fb.setPriceInDollar(bd);
                     bd.multiply(rs.getBigDecimal(1));
                     bd.setScale(2,BigDecimal.ROUND_UP);
-
+=======
+                    bd.setScale(2);
+                    fb.setPriceInDollar(bd);
+                    bd.multiply(rs.getBigDecimal(1));
+                    bd.setScale(2);
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a
                     fb.setPrice(bd);
                 }
                
@@ -354,4 +469,8 @@ public class FlightDAO extends AbstractDAO {
 			super(message);
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4332672f0b1bd866fcaf5c01553be2a15a5d810a

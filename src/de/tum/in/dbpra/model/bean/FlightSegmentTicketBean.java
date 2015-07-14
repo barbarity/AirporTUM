@@ -4,14 +4,24 @@ import java.math.BigDecimal;
 
 public class FlightSegmentTicketBean {
 
+	private int id;
 	private FlightBean flight;
 	private FoodTypeBean foodType;
 	private int seatNr;
 	private BigDecimal price;
 	private CurrencyBean currency;
 	private String travelClass;
-	
+	private String bookedFlightNumber;
 
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+	
 	public FlightBean getFlight() {
 		return flight;
 	}
@@ -58,6 +68,14 @@ public class FlightSegmentTicketBean {
 
 	public void setTravelClass(String travelClass) {
 		this.travelClass = travelClass;
+	}
+	
+	public String getBookedFlightNumber() {
+		return bookedFlightNumber;
+	}
+
+	public void setBookedFlightNumber(String bookedFlightNumber) {
+		this.bookedFlightNumber = bookedFlightNumber;
 	}
 	
 }

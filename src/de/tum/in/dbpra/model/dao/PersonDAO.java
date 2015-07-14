@@ -13,7 +13,45 @@ import de.tum.in.dbpra.model.bean.PersonBean;
 
 public class PersonDAO extends AbstractDAO {
 
-	public PersonBean getPerson(String email, String password) throws PersonNotFoundException, SQLException {
+	
+	public PersonBean getPersonById(PersonBean person) throws PersonNotFoundException, SQLException {
+		
+		String query = "SELECT 	person_id, firstName, lastName, passportId, gender, title, address, email, phone, birthdate, password, salt from person where person_id = ?";
+		
+		try (Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+				preparedStatement.setInt(1, person.getId());
+				try (ResultSet resultSet = preparedStatement.executeQuery();) {
+					if (resultSet.next()) {
+						person.setFirstName(resultSet.getString(2));
+						person.setLastName(resultSet.getString(3));
+						person.setPassportId(resultSet.getString(4));
+						person.setGender(resultSet.getString(5));
+						person.setTitle(resultSet.getString(6));
+						person.setAddress(resultSet.getString(7));
+						person.setEmail(resultSet.getString(8));
+						person.setPhone(resultSet.getString(9));
+						person.setBirthDate(resultSet.getDate(10));
+						person.setPassword(resultSet.getString(11));
+						person.setSalt(resultSet.getString(12));					
+					} 
+					resultSet.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw e;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		
+		return person;
+		
+		
+	}
+	
+	public PersonBean getPerson(String email, String passwordHashed) throws PersonNotFoundException, SQLException {
+		
 		String querySalt = "SELECT salt from person where email=?";
 		
 		String salt = "";
@@ -34,8 +72,7 @@ public class PersonDAO extends AbstractDAO {
 				throw e;
 			}
 		
-		
-		String passwordHashed = sha256(password+salt);
+					
 		
 		String query = "SELECT 	person_id, firstName, lastName, passportId, gender, title, address, email, phone, birthdate, password, salt from person where email=? and password = ?";
 	
@@ -72,16 +109,17 @@ public class PersonDAO extends AbstractDAO {
 			e.printStackTrace();
 			throw e;
 		}
+		
 		return person;
 	}
 	
 	
 	
 	
-	public PersonBean getCheckInWorker(String email, String password) throws PersonNotFoundException, SQLException {
+	public PersonBean getCheckInWorker(String email, String passwordHashed) throws PersonNotFoundException, SQLException {
 		
 		
-		String querySalt = "SELECT * from checkinworker, person  where cw_id=person_id and email=?";
+		String querySalt = "SELECT * from checkinworker, person  where cw_id=person_id and email= ?";
 		
 		PersonBean checkinworker = null;
 		
@@ -91,7 +129,7 @@ public class PersonDAO extends AbstractDAO {
 				try (ResultSet resultSet = preparedStatement.executeQuery();) {
 					if (resultSet.next()) {
 						//it is a checkin-worker
-						checkinworker = getPerson(email, password);
+						checkinworker = getPerson(email, passwordHashed);
 					} 
 					resultSet.close();
 				} catch (SQLException e) {
@@ -104,6 +142,36 @@ public class PersonDAO extends AbstractDAO {
 			}
 		
 		return checkinworker;
+	}
+	
+	
+
+	
+	
+	public String getSha256Hash(String email, String password) throws PersonNotFoundException, SQLException{
+		
+String querySalt = "SELECT * from person where email= ?";
+				String hash=null;
+		try (Connection connection = getConnection();
+				PreparedStatement preparedStatement = connection.prepareStatement(querySalt);) {
+				preparedStatement.setString(1, email);
+				try (ResultSet resultSet = preparedStatement.executeQuery();) {
+					if (resultSet.next()) {
+						String salt = resultSet.getString(12);
+						hash = sha256(password+salt);
+					} 
+					resultSet.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw e;
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw e;
+			}
+		
+		return hash;
+		
 	}
 	
 	

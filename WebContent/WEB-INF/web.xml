@@ -29,4 +29,28 @@
 		<servlet-name>PayServlet</servlet-name>
 		<url-pattern>/pay</url-pattern>
 	</servlet-mapping>
+		<servlet>
+		<servlet-name>LogInServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.LogInServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>LogInServlet</servlet-name>
+		<url-pattern>/login</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>CheckInServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.CheckInServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CheckInServlet</servlet-name>
+		<url-pattern>/checkIn</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>BookingOverviewServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.BookingOverviewServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BookingOverviewServlet</servlet-name>
+		<url-pattern>/bookingOverview</url-pattern>
+	</servlet-mapping>
 </web-app>

@@ -12,8 +12,7 @@ import de.tum.in.dbpra.model.bean.AirlineListBean;
 public class AirlineDAO extends AbstractDAO {
 
 	public AirlineListBean getAirlines() throws AirlineNotFoundException, SQLException {
-		//TODO: change "callsign" to "name for the real database"
-		String query = "SELECT code, callsign from airline";
+		String query = "SELECT code, name from airline";
 		
 		AirlineListBean airlineList = new AirlineListBean();
 		
@@ -42,8 +41,7 @@ public class AirlineDAO extends AbstractDAO {
 	
 	
 	public AirlineBean getAirlineById(AirlineBean airline) throws AirlineNotFoundException, SQLException {
-		//TODO also change callsign -> name
-		String query = "SELECT code, callsign from airline where code =?";
+		String query = "SELECT code, name from airline where code =?";
 				
 		try (Connection connection = getConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {

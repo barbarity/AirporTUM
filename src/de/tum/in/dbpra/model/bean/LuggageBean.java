@@ -1,18 +1,16 @@
 package de.tum.in.dbpra.model.bean;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
-public class LuggageBean {
+public class LuggageBean{
 
 	private int id;
+	private int bookingId;
 	private int weight;
 	private int height;
 	private int width;
 	private int length;
 	private BigDecimal additionalPrice;
-	private Timestamp checkedInOn;
-	private PersonBean checkInWorker;
 	private boolean registeredAtBooking;
 
 
@@ -25,6 +23,14 @@ public class LuggageBean {
 
 	public void setId(int id) {
 		this.id=id;
+	}
+	
+	public int getBookingId() {
+		return bookingId;
+	}
+
+	public void setBookingId(int bookingId) {
+		this.bookingId=bookingId;
 	}
 	
 	public int getWeight() {
@@ -67,22 +73,6 @@ public class LuggageBean {
 		this.additionalPrice=additionalPrice;
 	}
 	
-	public Timestamp getCheckedInOn() {
-		return checkedInOn;
-	}
-
-	public void setCheckedInOn(Timestamp checkedInOn) {
-		this.checkedInOn=checkedInOn;
-	}
-	
-	public PersonBean getCheckInWorker() {
-		return checkInWorker;
-	}
-
-	public void setCheckInWorker(PersonBean checkInWorker) {
-		this.checkInWorker=checkInWorker;
-	}
-	
 	public boolean getRegisteredAtBooking() {
 		return registeredAtBooking;
 	}
@@ -90,5 +80,6 @@ public class LuggageBean {
 	public void setRegisteredAtBooking(boolean registeredAtBooking) {
 		this.registeredAtBooking=registeredAtBooking;
 	}
+	
 	
 }
