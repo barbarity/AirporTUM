@@ -169,7 +169,7 @@ PersonBean checkinworker = Authenticator.authenticate(request);
 	
 	
 	
-	luggageItem.setAdditionalPrice(calculateAdditionalCost(luggageItem).multiply(booking.getCurrency().getPriceInDollar()));
+	luggageItem.setAdditionalPrice(roundBigDecimal(calculateAdditionalCost(luggageItem).multiply(booking.getCurrency().getPriceInDollar())));
 
 	
 	luggageDao.updateLuggageById(luggageItem);
@@ -214,7 +214,7 @@ try{
 	booking.setId(luggageItem.getBookingId());
 	booking=bookingDao.getBookingById(booking.getId());
 	
-	luggageItem.setAdditionalPrice(calculateAdditionalCost(luggageItem).multiply(booking.getCurrency().getPriceInDollar()));
+	luggageItem.setAdditionalPrice(roundBigDecimal(calculateAdditionalCost(luggageItem).multiply(booking.getCurrency().getPriceInDollar())));
 	luggageItem.setRegisteredAtBooking(false);
 	
 	LuggageDAO luggageDao = new LuggageDAO(con);
@@ -291,6 +291,9 @@ try{
     }
     
     
+    /*
+     * sets the additional cost for a certain luggage item
+     */
     private BigDecimal calculateAdditionalCost(LuggageBean luggageItem){
     	BigDecimal additionalCost = null;
     	
@@ -317,15 +320,26 @@ try{
     }
     
     
-    
+    /*
+     * calculates the basic additional price based on weight, width, length and height of the luggage item
+     */
     private BigDecimal costFunction(LuggageBean luggage){
     	BigDecimal price = new BigDecimal(0);
     	
     	price = new BigDecimal(((luggage.getWeight()/1000.0)+luggage.getWidth()+luggage.getHeight()+luggage.getLength())/100.0);
     	
-    	return price;
+    	return roundBigDecimal(price);
     }
     
+    
+    /*
+     * rounds a price to two decimal places
+     */
+    private BigDecimal roundBigDecimal(BigDecimal price){
+    	return price.setScale(2, BigDecimal.ROUND_UP);
+    }
+    
+
     private String generateCheckInWorkerHash(PersonBean checkinworker){
     	return checkinworker.getEmail()+checkinworker.getPassword();
     }

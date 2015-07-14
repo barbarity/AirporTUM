@@ -1,9 +1,8 @@
 package de.tum.in.dbpra.model.bean;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 
-public class LuggageBean implements Cloneable{
+public class LuggageBean{
 
 	private int id;
 	private int bookingId;
@@ -82,9 +81,5 @@ public class LuggageBean implements Cloneable{
 		this.registeredAtBooking=registeredAtBooking;
 	}
 	
-	@Override
-	public Object clone() throws CloneNotSupportedException{
-		return super.clone();
-	}
 	
 }

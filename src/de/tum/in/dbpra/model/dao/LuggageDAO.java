@@ -199,12 +199,9 @@ public class LuggageDAO extends AbstractDAO {
 	public LuggageBean getOldLuggageItem(LuggageBean luggageItem) throws LuggageNotFoundException, SQLException {
 		String query = "select luggage_id, booking_id, weight, height, width, length, additionalcost, registeredAtBooking from luggage where luggage_id = ?";
 		
-		LuggageBean oldLuggageItem = null;
-		try{
-		oldLuggageItem = (LuggageBean) luggageItem.clone();
-		}catch(CloneNotSupportedException e){
-			return null;
-		}
+		LuggageBean oldLuggageItem = new LuggageBean();
+		
+		oldLuggageItem.setId(luggageItem.getId());
 		
 		try (Connection connection = getConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
