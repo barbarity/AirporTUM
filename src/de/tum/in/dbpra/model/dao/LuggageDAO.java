@@ -151,48 +151,49 @@ public class LuggageDAO extends AbstractDAO {
 	
 	
 	public LuggageBean addNewLuggageItem(LuggageBean luggageItem) throws LuggageNotFoundException, SQLException {
-		String query = "insert into luggage values((select max(luggage_id)+1 from luggage), ?, ?, ?, ?, ?, ?, ?)";
-		/*try (Connection connection = getConnection();
-			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-			 */
 		
+		String query = "select coalesce(max(luggage_id),0)+1 from luggage";
 		PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.setInt(1, luggageItem.getBookingId());
-			preparedStatement.setInt(2, luggageItem.getWeight());
-			preparedStatement.setInt(3, luggageItem.getHeight());
-			preparedStatement.setInt(4, luggageItem.getWidth());
-			preparedStatement.setInt(5, luggageItem.getLength());
-			preparedStatement.setBigDecimal(6, luggageItem.getAdditionalPrice());
-			preparedStatement.setBoolean(7, luggageItem.getRegisteredAtBooking());
-			try {
-				int rows = preparedStatement.executeUpdate();
-				if (rows == 1){
-					query = "select max(luggage_id) from luggage";
-					preparedStatement = connection.prepareStatement(query);
-					try (ResultSet resultSet = preparedStatement.executeQuery();) {
-						if (resultSet.next()) {
-							luggageItem.setId(resultSet.getInt(1));
-						} 
-						resultSet.close();
-						return luggageItem;
-
-					} catch (SQLException e) {
-						e.printStackTrace();
-						throw e;
+				preparedStatement = connection.prepareStatement(query);
+				try (ResultSet resultSet = preparedStatement.executeQuery();) {
+					if (resultSet.next()) {
+						luggageItem.setId(resultSet.getInt(1));
+						
+						query = "insert into luggage values(?, ?, ?, ?, ?, ?, ?, ?)";
+						preparedStatement = connection.prepareStatement(query);
+						
+						preparedStatement.setInt(1, luggageItem.getId());
+						preparedStatement.setInt(2, luggageItem.getBookingId());
+						preparedStatement.setInt(3, luggageItem.getWeight());
+						preparedStatement.setInt(4, luggageItem.getHeight());
+						preparedStatement.setInt(5, luggageItem.getWidth());
+						preparedStatement.setInt(6, luggageItem.getLength());
+						preparedStatement.setBigDecimal(7, luggageItem.getAdditionalPrice());
+						preparedStatement.setBoolean(8, luggageItem.getRegisteredAtBooking());
+						try {
+							int rows = preparedStatement.executeUpdate();
+							if (rows == 1){
+									return luggageItem;
+							}
+								} catch (SQLException e) {
+									e.printStackTrace();
+									throw e;
+								}
 					}
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-				throw e;
+					resultSet.close();
+						} catch (SQLException e) {
+							e.printStackTrace();
+							throw e;
+						}
+						
+						
+					return null;
+
 			}
-			/*
-		} catch (SQLException e) {
-			e.printStackTrace();
-			throw e;
-		}
-		*/
-		return null;
-	}
+	
+		
+		
+	
 	
 	
 	

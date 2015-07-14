@@ -70,7 +70,7 @@ logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 					Price
 				</div>
 				<div class="col-sm-4">
-					<%= booking.getPrice() %>
+					<%= booking.getPrice() %> <%= booking.getCurrency().getSymbol() %>
 				</div>
 		</div>
 		
@@ -164,7 +164,7 @@ logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 					<%= luggageItem.getLength() %>
 				</div>
 				<div class="col-sm-1">
-					<%= luggageItem.getAdditionalPrice() %>
+					<%= luggageItem.getAdditionalPrice() %> <%= booking.getCurrency().getSymbol() %>
 				</div>
 				
 		</div>

@@ -18,7 +18,7 @@ import de.tum.in.dbpra.model.bean.BookingBean;
 import de.tum.in.dbpra.model.bean.LuggageBean;
 import de.tum.in.dbpra.model.bean.PersonBean;
 
-
+import de.tum.in.dbpra.model.dao.AbstractDAO;
 import de.tum.in.dbpra.model.dao.BookingDAO;
 import de.tum.in.dbpra.model.dao.LuggageDAO;
 
@@ -351,7 +351,8 @@ try{
 		if(con == null){
 			//not yet in the hashMap
 			try{
-				con = getConnection();
+				AbstractDAO abstractDao = new AbstractDAO();
+				con = abstractDao.getConnection();
 				con.setAutoCommit(false);
 				}catch(SQLException e){
 					
@@ -382,7 +383,7 @@ try{
     		}
     	}
     }
-    
+    /*
     protected Connection getConnection() throws SQLException {
     	try {
 			Class.forName("org.postgresql.Driver");
@@ -391,4 +392,5 @@ try{
 		};
         return DriverManager.getConnection("jdbc:postgresql://localhost/airporTUM_webapp", "postgres", "p");
     }
+    */
 }
