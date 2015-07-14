@@ -69,11 +69,9 @@ public class BookingDAO extends AbstractDAO {
 					booking.setId(id);
 					
 					
+					booking.setBookedAtAirline(airline);
+
 					
-					FlightSegmentTicketDAO flightSegmentTicketDao = new FlightSegmentTicketDAO();
-					ArrayList<FlightSegmentTicketBean> flightSegmentTickets = flightSegmentTicketDao.getFlightSegmentTicketsFromBooking(booking);
-					
-					booking.setFlightSegmentTicketList(flightSegmentTickets);
 					
 					
 					LuggageDAO luggageDao = new LuggageDAO(connection);
@@ -82,11 +80,17 @@ public class BookingDAO extends AbstractDAO {
 					booking.setLuggageList(luggageItems);
 					
 					booking.setPrice(resultSet.getBigDecimal(4));
-					booking.setBookedAtAirline(airline);
 					booking.setCurrency(currency);
 					booking.setPerson(person);
 					booking.setBookingTimestamp(resultSet.getDate(6));
 					booking.setCheckedInOn(resultSet.getDate(7));
+					
+					FlightSegmentTicketDAO flightSegmentTicketDao = new FlightSegmentTicketDAO();
+					ArrayList<FlightSegmentTicketBean> flightSegmentTickets = flightSegmentTicketDao.getFlightSegmentTicketsFromBooking(booking);
+					
+					
+					
+					booking.setFlightSegmentTicketList(flightSegmentTickets);
 					
 					
 				}

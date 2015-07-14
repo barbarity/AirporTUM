@@ -59,6 +59,7 @@ public class FlightDAO extends AbstractDAO {
                     fb.setArrivalCity(ct2);
                     fb.setDistance(resultSet.getInt(17));
                     fb.setOperatingFlightNumber(resultSet.getString(12));
+                    setSharedFlightNumbersForFlight(fb);
 				} 
 				else{
 					throw new FlightNotFoundException("Database found no flight for the given id!");
@@ -203,8 +204,11 @@ public class FlightDAO extends AbstractDAO {
             throw e;
         }
     }
-    private void setSharedFlightNumbers(ArrayList<FlightBean> al)throws SQLException{
-        String query="select s.flight_number, s.airline_id from route r, sharedFlightNumbers s where r.route_id=? and s.route_id=r.route_id";
+    
+    
+    private void setSharedFlightNumbersForFlight(FlightBean flight) throws SQLException{
+    	
+    		String query="select s.flight_number, s.airline_code from sharedFlightNumbers s where s.route_id=?";
     
         
         try{
@@ -213,24 +217,37 @@ public class FlightDAO extends AbstractDAO {
             PreparedStatement prep = con.prepareStatement(query);
             
        
-            for(int i=0;i<al.size();i++){
             
-                FlightBean fb=al.get(i);
+            
                 ArrayList<String> sfnl=new ArrayList<String>(); //sharedFlightNumbersList
-                prep.setInt(1,fb.getRouteId());
+                prep.setInt(1,flight.getRouteId());
                 ResultSet rs=prep.executeQuery();
                 while(rs.next()){
-                    sfnl.add(rs.getString(1)+rs.getString(2));
+                    sfnl.add(rs.getString(2)+rs.getString(1));
                 }
-                fb.setSharedFlightNumbers(sfnl);
-                al.set(i, fb);
+                flight.setSharedFlightNumbers(sfnl);            
             
-            }
         }catch(SQLException e){
             System.out.println(e.getMessage());
             throw e;
         }
+    	
     }
+    
+    
+    private void setSharedFlightNumbers(ArrayList<FlightBean> al)throws SQLException{
+        
+            for(int i=0;i<al.size();i++){
+            
+                FlightBean fb=al.get(i);
+                setSharedFlightNumbersForFlight(fb);
+                al.set(i, fb);
+            
+            }
+    }
+    
+    
+    
     private void setPrice(ArrayList<FlightBean> al,String fc)throws SQLException{
         String query="select price_in_dollar from city c, country co, currency cu where c.country_code=co.country_code and co.currency_code=cu.currency_code and c.city_id=?";
         try{
