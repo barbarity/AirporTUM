@@ -2,6 +2,7 @@ package de.tum.in.dbpra.model.dao;
 
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -61,10 +62,10 @@ public class AirportDAO extends AbstractDAO {
             
             
        
-            	int counter=0;
+            	int counter=-1;
                 ResultSet rs=prep.executeQuery();
-                while(rs.next()){
-                	counter++;
+                if(rs.next()){
+                	counter=rs.getInt(1);
                 }
 
 

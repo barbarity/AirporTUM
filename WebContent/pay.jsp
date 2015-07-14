@@ -51,7 +51,7 @@
 							</div>
 						</div>
 						<div class="col-sm-offset-3 col-sm-9">
-							<button type="submit" class="btn btn-default">Login</button>
+							<button type="submit"  name="login" class="btn btn-default">Login</button>
 						</div>
 					</form>
 				</div>
@@ -115,7 +115,7 @@
 							<label for="phone">Phone</label>
 							<input type="tel" class="form-control" name="phone" id="phone" placeholder="Phone...">
 						</div>
-						<button type="submit" class="btn btn-default">Register</button>
+						<button type="submit" name="register" class="btn btn-default">Register</button>
 					</form>
 				</div>
 			</div>

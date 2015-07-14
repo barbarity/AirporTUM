@@ -1,11 +1,20 @@
 package de.tum.in.dbpra.model.bean;
 
+import java.math.BigDecimal;
+
 public class CurrencyBean {
 
 	private String currencyCode;
 	private String name;
 	private String symbol;
-
+	private BigDecimal price_in_dollar;
+	
+	public BigDecimal getPriceInDollar(){
+		return price_in_dollar;
+	}
+	public void setPriceInDollar(BigDecimal d){
+		price_in_dollar=d;
+	}
 
 	public String getCurrencyCode() {
 		return currencyCode;

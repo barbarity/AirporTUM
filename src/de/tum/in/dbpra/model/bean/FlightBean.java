@@ -2,6 +2,7 @@ package de.tum.in.dbpra.model.bean;
 
 import java.sql.Date;
 import java.sql.Time;
+import org.postgresql.util.PGInterval;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 

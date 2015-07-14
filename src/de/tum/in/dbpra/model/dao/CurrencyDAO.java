@@ -41,7 +41,7 @@ public class CurrencyDAO extends AbstractDAO {
 	
 	
 	public CurrencyBean getCurrencyByCurrencyCode(CurrencyBean currency) throws CurrencyNotFoundException, SQLException {
-		String query = "SELECT currency_code, name, symbol FROM currency WHERE currency_code =?";
+		String query = "SELECT currency_code, name, symbol, price_in_dollar FROM currency WHERE currency_code =?";
 				
 		try (Connection connection = getConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
@@ -49,8 +49,10 @@ public class CurrencyDAO extends AbstractDAO {
 			
 			try (ResultSet resultSet = preparedStatement.executeQuery();) {
 				if (resultSet.next()) {
+					currency.setCurrencyCode(resultSet.getString(1));
 					currency.setName(resultSet.getString(2));
 					currency.setSymbol(resultSet.getString(3));
+					currency.setPriceInDollar(resultSet.getBigDecimal(4));
 				} 
 				else{
 					throw new CurrencyNotFoundException("Database found no currency for the given id!");

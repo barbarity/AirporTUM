@@ -1,7 +1,9 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="java.text.DecimalFormat"%>
 <%@page import="de.tum.in.dbpra.model.bean.CityBean"%>
 <%@page import="de.tum.in.dbpra.model.bean.AirlineBean"%>
+<%@page import="de.tum.in.dbpra.model.bean.FlightBean"%>
 <%@page import="de.tum.in.dbpra.model.bean.ConnectionBean"%>
 
 <jsp:useBean id="connectionList" scope="request"
@@ -29,23 +31,52 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
+<%  DecimalFormat myFormatter = new DecimalFormat("###,###.00"); %>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-10">
-			<% for (int i = 0; i < connectionList.getConnectionList().size(); i++) { %>
-				<div class="row">
-					<div class="col-sm-10">
-						Here goes info about the connection. Like the price: <%= connectionList.getConnectionList().get(i).getOverallPrice() %>
-					</div>
-					<div class="col-sm-2">
-						<form action="pay" method="post">
-							<% for (int j = 0; j < connectionList.getConnectionList().get(i).getFlightList().size(); j++) { %>
-							<input type="hidden" name="flights[]" value="<%= connectionList.getConnectionList().get(i).getFlightList().get(j).getFlightId() %>" />
-							<% } %>
-							<button type="submit">Book</button>
-						</form>
-					</div>
-				</div>
+			<% for (int i = 0; i < connectionList.getConnectionList().size(); i++) {
+				ConnectionBean currentConnection = connectionList.getConnectionList().get(i);
+				int size = currentConnection.getFlightList().size(); %>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th colspan="3">
+								<h2><%= currentConnection.getFlightList().get(0).getDepartureAirport().getIATA() %> <span class="glyphicon glyphicon-arrow-right"></span> <%= currentConnection.getFlightList().get(size-1).getArrivalAirport().getIATA() %></h2>
+							</th>
+							<th class="text-right"><h4><%= currentConnection.getFlightList().size() %> stops</h4></th>
+							<th class="text-right"><h4><%= currentConnection.getOverallDuration() %></h4></th>
+							<th class="text-right"><h4><%= myFormatter.format(currentConnection.getOverallPrice()) %> <%= currentConnection.getCurrency().getSymbol() %></h4></th>
+						</tr>
+					</thead>
+					<tbody>
+						<% for (FlightBean currentFlight: currentConnection.getFlightList()) { %>
+						<tr>
+							<td><%= currentFlight.getOperatingAirline() %></td>
+							<td><%= currentFlight.getLocalDepartureTime().toString() %> <%= currentFlight.getDepartureCity().getName() %></td>
+							<td class="text-center"><span class="glyphicon glyphicon-arrow-right"></span></td>
+							<td class="text-right"><%= currentFlight.getLocalArrivalTime().toString() %> <%= currentFlight.getArrivalCity().getName() %></td>
+							<td class="text-right"><%= currentFlight.getDuration() %> h</td>
+							<td class="text-right"><%= myFormatter.format(currentFlight.getPrice()) %> <%= currentConnection.getCurrency().getSymbol() %></td>
+						</tr>
+						<% } %>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="6" class="text-right">
+								<form action="pay" method="post">
+									<% for (int j = 0; j < connectionList.getConnectionList().get(i).getFlightList().size(); j++) { %>
+									<input type="hidden" name="flights[]" value="<%= connectionList.getConnectionList().get(i).getFlightList().get(j).getFlightId() %>" />
+									<% } %>
+									<input type="hidden" name="peopleLeft" value="<%= request.getParameter("people") %>" />
+									<input type="hidden" name="className" value="<%= request.getParameter("className") %>" />
+									<input type="hidden" name="currency" value="" />
+									<button type="submit" class="btn btn-primary">Book</button>
+								</form>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
 			<% } %>
 			</div>
 			<div class="col-sm-2">
