@@ -383,14 +383,5 @@ try{
     		}
     	}
     }
-    /*
-    protected Connection getConnection() throws SQLException {
-    	try {
-			Class.forName("org.postgresql.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		};
-        return DriverManager.getConnection("jdbc:postgresql://localhost/airporTUM_webapp", "postgres", "p");
-    }
-    */
+
 }

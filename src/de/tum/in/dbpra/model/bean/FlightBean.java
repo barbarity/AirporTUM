@@ -18,7 +18,7 @@ public class FlightBean {
 	private CityBean arrivalCity;   
 	private int distance;   
 	private String operatingFlightNumber;   
-        private String operatingAirline;    
+    private AirlineBean operatingAirline;    
 	private ArrayList<String> sharedFlightNumbers; 
 	private String gateNr;  
 	private BigDecimal price;   
@@ -59,12 +59,12 @@ public class FlightBean {
 		this.date = date;
 	}
         
-        public String getOperatingAirline(){
+        public AirlineBean getOperatingAirline(){
             return operatingAirline;
         }
         
-        public void setOperatingAirline(String s){
-            operatingAirline=s;
+        public void setOperatingAirline(AirlineBean operatingAirline){
+            this.operatingAirline=operatingAirline;
         }
         
 	public Time getLocalDepartureTime() {

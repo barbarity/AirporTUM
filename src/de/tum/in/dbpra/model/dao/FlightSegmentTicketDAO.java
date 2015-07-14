@@ -46,6 +46,8 @@ public class FlightSegmentTicketDAO extends AbstractDAO {
 					flightSegmentTicket.setPrice(resultSet.getBigDecimal(5));
 					flightSegmentTicket.setSeatNr(resultSet.getInt(6));
 
+					setBookedFlightNumber(booking, flightSegmentTicket);
+					
 					flightSegmentTickets.add(flightSegmentTicket);
 				}
 				
@@ -64,6 +66,28 @@ public class FlightSegmentTicketDAO extends AbstractDAO {
 		return flightSegmentTickets;
 	}
 	
+	
+	
+	/*
+	 * sets the flight number that has actually been booked in the given FlightSegmentTicketBean. 
+	 * We need this to take codesharing into account.
+	 */
+	private FlightSegmentTicketBean setBookedFlightNumber(BookingBean booking, FlightSegmentTicketBean flightSegmentTicket){
+		String bookedFlightNumber = flightSegmentTicket.getFlight().getOperatingAirline().getCode()+flightSegmentTicket.getFlight().getOperatingFlightNumber();
+		
+		if(booking.getBookedAtAirline()!=null && !bookedFlightNumber.startsWith(booking.getBookedAtAirline().getCode())){
+			for (int i=0; i<flightSegmentTicket.getFlight().getSharedFlightNumbers().size(); i++){
+				String flightNumber = flightSegmentTicket.getFlight().getSharedFlightNumbers().get(i);
+				if(flightNumber.startsWith(booking.getBookedAtAirline().getCode())){
+					bookedFlightNumber = flightNumber; 
+					break;
+				}
+			}
+		}
+		
+		flightSegmentTicket.setBookedFlightNumber(bookedFlightNumber);
+		return flightSegmentTicket;
+	}
 	
 	
 	

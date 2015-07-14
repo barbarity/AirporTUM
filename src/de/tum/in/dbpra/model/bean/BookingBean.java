@@ -71,7 +71,7 @@ public class BookingBean {
 	public void setBookedAtAirline(AirlineBean bookedAtAirline) {
 		this.bookedAtAirline = bookedAtAirline;
 	}
-	
+		
 	public Date getBookingTimestamp(){
 		return bookingTimestamp;
 	}

@@ -112,7 +112,7 @@ logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 <% FlightSegmentTicketBean fst = booking.getFlightSegmentTicketList().get(i); %>
 	<div class="row">
 				<div class="col-sm-1">
-					<%= fst.getFlight().getOperatingAirline() %><%= fst.getFlight().getOperatingFlightNumber() %>
+					<div data-toggle="tooltip" data-placement="top" title="Operated by <%= fst.getFlight().getOperatingAirline().getName() %>"><%= fst.getBookedFlightNumber() %></div>
 				</div>
 				<div class="col-sm-1">
 					<%= fst.getFlight().getDate() %>

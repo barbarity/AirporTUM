@@ -11,6 +11,7 @@ import java.sql.Time;
 import de.tum.in.dbpra.model.bean.FlightBean;
 import de.tum.in.dbpra.model.bean.CityBean;
 import de.tum.in.dbpra.model.bean.AirportBean;
+import de.tum.in.dbpra.model.bean.AirlineBean;
 
 
 public class FlightDAO extends AbstractDAO {
@@ -18,8 +19,8 @@ public class FlightDAO extends AbstractDAO {
 	
 	
 	public FlightBean getFlightById(FlightBean fb) throws FlightNotFoundException, SQLException {
-		String query = "select f.*, r.*, r.departureTime+cstart.timezone, r.departureTime+r.duration+cend.timezone, cstart.*, cend.*, astart.*, aend.* from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend "
- +"where astart.iata=r.departure_iata and aend.iata=arrival_iata and aend.city_id=cend.city_id and astart.city_id=cstart.city_id and f.route_id=r.route_id and f.flight_id=? ";
+		String query = "select f.*, r.*, r.departureTime+cstart.timezone, r.departureTime+r.duration+cend.timezone, cstart.*, cend.*, astart.*, aend.*, a.code, a.name from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, Airline a "
+ +"where astart.iata=r.departure_iata and aend.iata=arrival_iata and aend.city_id=cend.city_id and astart.city_id=cstart.city_id and f.route_id=r.route_id and r.airline_code = a.code and f.flight_id=? ";
 				
 		try (Connection connection = getConnection();
 			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
@@ -34,7 +35,10 @@ public class FlightDAO extends AbstractDAO {
                     fb.setLocalArrivalTime(resultSet.getTime(19));
                     fb.setDuration(resultSet.getTime(15));
                     fb.setGateNr(resultSet.getString(7));
-                    fb.setOperatingAirline(resultSet.getString(13));
+                    AirlineBean airline = new AirlineBean();
+                    airline.setCode(resultSet.getString(36));
+                    airline.setName(resultSet.getString(37));
+                    fb.setOperatingAirline(airline);
                     AirportBean ap=new AirportBean();
                     AirportBean ap2=new AirportBean();
                     ap.setIATA(resultSet.getString(30));
@@ -82,27 +86,27 @@ public class FlightDAO extends AbstractDAO {
         	query="with takenseats as (select fl.flight_id as fl,  coalesce(count(fst.fst_id),0) as seats from Airplane ap, Flight fl left outer join (select * from FlightSegmentTicket where class='economy') fst on (fst.flight_id=fl.flight_id) where ap.registration_num=fl.airplane_registration_num  group by fl.flight_id)"
         			+
 
-        		"select * from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap where departure_iata=? "
+        		"select * from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "
         		        +"        and f.date+r.departureTime-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and" 
-        		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.economyClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num";
+        		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.economyClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num and r.airline_code=a.code";
 
         }
         else if(flightClass.compareTo("business")==0){
         	query="with takenseats as (select fl.flight_id as fl,  coalesce(count(fst.fst_id),0) as seats from Airplane ap, Flight fl left outer join (select * from FlightSegmentTicket where class='business') fst on (fst.flight_id=fl.flight_id) where ap.registration_num=fl.airplane_registration_num  group by fl.flight_id)"
         			+
 
-        		"select * from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap where departure_iata=? "
+        		"select * from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "
         		        +"        and f.date+r.departureTime-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and" 
-        		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.businessClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num";
+        		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.businessClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num  and r.airline_code=a.code";
 
         }
         else{
         	query="with takenseats as (select fl.flight_id as fl,  coalesce(count(fst.fst_id),0) as seats from Airplane ap, Flight fl left outer join (select * from FlightSegmentTicket where class='first') fst on (fst.flight_id=fl.flight_id) where ap.registration_num=fl.airplane_registration_num  group by fl.flight_id)"
         			+
 
-        		"select * from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap where departure_iata=? "
+        		"select * from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "
         		        +"        and f.date+r.departureTime-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and" 
-        		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.firstClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num";
+        		          +"      aend.city_id=cend.city_id and astart.city_id=cstart.city_id and aend.iata=? and f.route_id=r.route_id and fs.fl=f.flight_id and ap.firstClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num  and r.airline_code=a.code";
 
   
         }
@@ -128,7 +132,10 @@ public class FlightDAO extends AbstractDAO {
                     fb.setLocalArrivalTime(rs.getTime("locArrTime"));
                     fb.setDuration(rs.getTime(15));
                     fb.setGateNr(rs.getString(7));
-                    fb.setOperatingAirline(rs.getString(13));
+                    AirlineBean airline = new AirlineBean();
+                    airline.setCode(rs.getString(42));
+                    airline.setName(rs.getString(44));
+                    fb.setOperatingAirline(airline);
                     AirportBean ap=new AirportBean();
                     AirportBean ap2=new AirportBean();
                     ap.setIATA(rs.getString(28));
@@ -251,7 +258,7 @@ public class FlightDAO extends AbstractDAO {
                     double helper=1;
                     helper=helper*((double)fb.getDistance());
                     helper=helper+0.1*(double)obscureHash(fb.getAirplaneModel());
-                    helper=helper+0.3*(double)obscureHash(fb.getOperatingAirline());
+                    helper=helper+0.3*(double)obscureHash(fb.getOperatingAirline().getCode());
                     if(fc.compareTo("business")==0){
                     	helper=helper*1.5;
                     }

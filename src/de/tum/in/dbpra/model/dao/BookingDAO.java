@@ -89,12 +89,6 @@ public class BookingDAO extends AbstractDAO {
 					booking.setCheckedInOn(resultSet.getDate(7));
 					
 					
-
-					
-					//TODO
-					//luggageList = luggageDao.getLuggageItemsForBooking( int bookingid)
-					//booking.setLuggageList(luggageList);
-					
 				}
 				
 				resultSet.close();
@@ -118,7 +112,9 @@ public class BookingDAO extends AbstractDAO {
 	
 	
 	
-	
+	/*
+	 * writes the current date/time in the database to mark that the booking has been checked in now
+	 */
 	public boolean finishCheckIn(BookingBean booking) throws AirlineNotFoundException, SQLException {
 		String query = "update booking set checkedInOn=NOW() where booking_id =?";
 				
@@ -140,6 +136,8 @@ public class BookingDAO extends AbstractDAO {
 		}
 		return false;
 	}
+	
+	
 	
 	
 	
