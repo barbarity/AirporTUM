@@ -80,7 +80,7 @@ logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
 					Price
 				</div>
 				<div class="col-sm-4">
-					<%= booking.getPrice() %>
+					<%= booking.getPrice() %> <%= booking.getCurrency().getSymbol() %>
 				</div>
 		</div>
 		

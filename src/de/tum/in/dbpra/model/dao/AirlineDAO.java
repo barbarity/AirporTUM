@@ -41,7 +41,6 @@ public class AirlineDAO extends AbstractDAO {
 	
 	
 	public AirlineBean getAirlineById(AirlineBean airline) throws AirlineNotFoundException, SQLException {
-		//TODO also change callsign -> name
 		String query = "SELECT code, name from airline where code =?";
 				
 		try (Connection connection = getConnection();

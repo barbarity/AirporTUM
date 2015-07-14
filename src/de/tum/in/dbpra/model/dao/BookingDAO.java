@@ -12,6 +12,7 @@ import de.tum.in.dbpra.model.bean.AirlineBean;
 import de.tum.in.dbpra.model.bean.PersonBean;
 import de.tum.in.dbpra.model.bean.CurrencyBean;
 import de.tum.in.dbpra.model.bean.FlightSegmentTicketBean;
+import de.tum.in.dbpra.model.dao.AirlineDAO.AirlineNotFoundException;
 
 
 public class BookingDAO extends AbstractDAO {
@@ -113,6 +114,31 @@ public class BookingDAO extends AbstractDAO {
 		
 		
 		return booking;
+	}
+	
+	
+	
+	
+	public boolean finishCheckIn(BookingBean booking) throws AirlineNotFoundException, SQLException {
+		String query = "update booking set checkedInOn=NOW() where booking_id =?";
+				
+		try (Connection connection = getConnection();
+			 PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+			 preparedStatement.setInt(1, booking.getId());
+			
+			 try {
+					int rows = preparedStatement.executeUpdate();
+					if (rows == 1) return true;
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw e;
+				}
+			 
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		return false;
 	}
 	
 	

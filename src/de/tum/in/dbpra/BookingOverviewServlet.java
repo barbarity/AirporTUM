@@ -4,23 +4,21 @@ package de.tum.in.dbpra;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Cookie;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
 import java.util.Date;
+import java.util.Iterator;
 import de.tum.in.dbpra.model.bean.BookingBean;
 import de.tum.in.dbpra.model.bean.LuggageBean;
 import de.tum.in.dbpra.model.bean.PersonBean;
 
 
-import de.tum.in.dbpra.model.dao.PersonDAO;
 import de.tum.in.dbpra.model.dao.BookingDAO;
 import de.tum.in.dbpra.model.dao.LuggageDAO;
 
@@ -33,12 +31,13 @@ public class BookingOverviewServlet extends HttpServlet {
 
 		//(key,value) = (hashed checkinworker, his connection)
 		public LinkedHashMap<String, Connection> connections;
-		
+		public LinkedHashMap<String, Date> connectionTimestamps;
 		
 		@Override
 	public void init(){
 			
 		connections = new LinkedHashMap<String, Connection>();
+		connectionTimestamps = new LinkedHashMap<String, Date>();
 			/*
 			try{
 			
@@ -56,7 +55,10 @@ public class BookingOverviewServlet extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
+		
+		//close old connections every time somebody does a post
+		closeConnections();
+		
 PersonBean checkinworker = Authenticator.authenticate(request);
 		
 		if(checkinworker != null){
@@ -244,10 +246,12 @@ try{
     		
     		//TODO
     		//set the checkedInOn timestamp
-    		//bookingDao.updateBooking(booking);
+    		bookingDao.finishCheckIn(booking);
     		
     		con.commit();
-    		
+    		con.close();
+    		connections.remove(generateCheckInWorkerHash(checkinworker));
+    		connectionTimestamps.remove(generateCheckInWorkerHash(checkinworker));
 	}catch(Throwable e){
 		request.setAttribute("error", e.getMessage());
 	}
@@ -276,7 +280,8 @@ try{
     protected void doGet(HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException {
     	
-    	
+		//close old connections every time somebody does a get
+		closeConnections();
 
 	RequestDispatcher dispatcher = request.getRequestDispatcher("/login.jsp");
 	dispatcher.forward(request, response);
@@ -321,10 +326,13 @@ try{
     	return price;
     }
     
+    private String generateCheckInWorkerHash(PersonBean checkinworker){
+    	return checkinworker.getEmail()+checkinworker.getPassword();
+    }
     
     private Connection getConnectionForCheckinWorker(PersonBean checkinworker){
     	//get the connection of this checkinworker. Its either already stored in the connections hashmap or a new connection has to be created
-		String checkInWorkerHash = checkinworker.getEmail()+checkinworker.getPassword();
+		String checkInWorkerHash = generateCheckInWorkerHash(checkinworker);
 		Connection con = connections.get(checkInWorkerHash);
 		if(con == null){
 			//not yet in the hashMap
@@ -335,9 +343,30 @@ try{
 					
 				}
 			connections.put(checkInWorkerHash, con);
+			connectionTimestamps.put(checkInWorkerHash, new Date());
 		}
     	
     	return con;
+    }
+    
+    private void closeConnections(){
+    	Iterator<String> iterator = connectionTimestamps.keySet().iterator();
+    	while(iterator.hasNext()){
+    		String key = iterator.next();
+    		Date timestamp = connectionTimestamps.get(key);
+    		if((new Date().getTime() - timestamp.getTime())/(1000*60) > 5){
+    			//it is older than 5 minutes -> close and delete connection
+    			Connection con = connections.get(key);
+    			try{
+        		con.rollback();
+        		con.close();
+    			}catch(Throwable e){
+    				
+    			}
+        		connections.remove(key);
+        		connectionTimestamps.remove(key);
+    		}
+    	}
     }
     
     protected Connection getConnection() throws SQLException {
