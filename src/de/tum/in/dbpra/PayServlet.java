@@ -41,7 +41,7 @@ public class PayServlet extends HttpServlet {
 			
 				for (int i = 0; i < peopleIds.length; i++) {
 					PersonBean person = new PersonBean();
-					person.setPassportId(peopleIds[i]);
+					person.setId(Integer.parseInt(peopleIds[i]));
 					person = personDAO.getPersonById(person);
 					people.add(person);
 				}
@@ -56,11 +56,11 @@ public class PayServlet extends HttpServlet {
 				String password = request.getParameter("passwordLogin");
 				
 				try {
-					PersonBean person = personDAO.getPerson(email, personDAO.getSha256Hash(email, password));
+					PersonBean newPerson = personDAO.getPerson(email, personDAO.getSha256Hash(email, password));
 					
 					// Success
 					peopleLeft--;
-					people.add(person);
+					people.add(newPerson);
 					
 				} catch (SQLException e) {
 					// TODO: Set an error message to show in the page
@@ -81,10 +81,10 @@ public class PayServlet extends HttpServlet {
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
 				
 				try {
-					PersonBean person = personDAO.addNewPerson(firstName, lastName, passportId, gender, title, address, email, phone, new Date(formatter.parse(birthDate).getTime()), repeatPassword, "salt");
+					PersonBean newPerson = personDAO.addNewPerson(firstName, lastName, passportId, gender, title, address, email, phone, new Date(formatter.parse(birthDate).getTime()), repeatPassword, "salt");
 					
 					peopleLeft--;
-					people.add(person);
+					people.add(newPerson);
 					
 				} catch (PersonNotFoundException e) {
 					// TODO: Set an error message

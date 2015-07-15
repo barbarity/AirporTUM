@@ -1,10 +1,14 @@
 package de.tum.in.dbpra.model.dao;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import de.tum.in.dbpra.model.bean.BookingBean;
 import de.tum.in.dbpra.model.bean.LuggageBean;
@@ -13,6 +17,7 @@ import de.tum.in.dbpra.model.bean.PersonBean;
 import de.tum.in.dbpra.model.bean.CurrencyBean;
 import de.tum.in.dbpra.model.bean.FlightSegmentTicketBean;
 import de.tum.in.dbpra.model.dao.AirlineDAO.AirlineNotFoundException;
+import de.tum.in.dbpra.model.dao.FlightSegmentTicketDAO.FlightSegmentTicketNotFound;
 
 
 public class BookingDAO extends AbstractDAO {
@@ -23,7 +28,7 @@ public class BookingDAO extends AbstractDAO {
 		this.connection=con;
 	}
 	
-	public BookingBean getBookingById(int id) throws BookingNotFoundException, PersonDAO.PersonNotFoundException, AirlineDAO.AirlineNotFoundException, FoodTypeDAO.FoodTypeNotFoundException, LuggageDAO.LuggageNotFoundException, CurrencyDAO.CurrencyNotFoundException, FlightSegmentTicketDAO.BookingNotFoundException,FlightDAO.FlightNotFoundException, SQLException {
+	public BookingBean getBookingById(int id) throws BookingNotFoundException, PersonDAO.PersonNotFoundException, AirlineDAO.AirlineNotFoundException, FoodTypeDAO.FoodTypeNotFoundException, LuggageDAO.LuggageNotFoundException, CurrencyDAO.CurrencyNotFoundException,FlightDAO.FlightNotFoundException, SQLException {
 		
 		
 		String query = "SELECT booking_id, customer_id, airline_code, price, currency_code, bookingTimestamp, checkedInOn " +
@@ -106,7 +111,10 @@ public class BookingDAO extends AbstractDAO {
 			throw e;
 		}
 		
-		*/
+		*/ catch (FlightSegmentTicketNotFound e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
 		
 		
@@ -140,19 +148,64 @@ public class BookingDAO extends AbstractDAO {
 		}
 		return false;
 	}
-	
-	
-	
-	
-	
-	
+
+	public BookingBean addNewBooking(BookingBean booking) throws BookingNotFoundException, SQLException {
+
+		String query = "select coalesce(max(booking_id),0)+1 from booking";
+		
+		PreparedStatement preparedStatement = connection.prepareStatement(query);
+		preparedStatement = connection.prepareStatement(query);
+		
+		try (ResultSet resultSet = preparedStatement.executeQuery();) {
+			if (resultSet.next()) {
+				booking.setId(resultSet.getInt(1));
+
+				query = "insert into booking (booking_id, customer_id, price, currency_code, paymentmethod, bookingtimestamp, airline_code) values(?, ?, ?, ?, ?::paymentmethod, ?, ?)";
+				preparedStatement = connection.prepareStatement(query);
+
+				preparedStatement.setInt(1, booking.getId());
+				preparedStatement.setInt(2, booking.getPerson().getId());
+				preparedStatement.setBigDecimal(3, new BigDecimal(0.1));
+				preparedStatement.setString(4, booking.getCurrency().getCurrencyCode());
+				preparedStatement.setString(5, "cash");
+				preparedStatement.setTimestamp(6, new Timestamp(Calendar.getInstance().getTime().getTime()));
+				preparedStatement.setString(7, "LH");
+				
+				
+				try {
+					int rows = preparedStatement.executeUpdate();
+					if (rows == 1){
+						
+						FlightSegmentTicketDAO fstDAO = new FlightSegmentTicketDAO();
+						fstDAO.addNewFlightSegmentTicket(booking, connection);
+						
+						return booking;
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+					throw e;
+				} catch (FlightSegmentTicketNotFound e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			resultSet.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+
+		return null;
+	}
+
+
 	@SuppressWarnings("serial")
 	public static class BookingNotFoundException extends Throwable {
 		BookingNotFoundException(String message){
 			super(message);
 		}
 	}
-	
-	
-	
+
+
+
 }
