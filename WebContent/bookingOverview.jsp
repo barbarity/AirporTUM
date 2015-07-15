@@ -27,15 +27,15 @@
 </head>
 <body style="background-image:url(A343.jpg)">
 <div class="container well">
-<div class="row">
+<div class="row">	
 	<form action="login" method="post">
 	<div class="col-md-offset-6 col-md-6">
 		<input type="hidden" name="logoutUser" value="<%= checkinworker.getEmail() %>" />			
 	<h4 class="pull-right">logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %> </h4>
 	</div>
 	<div class="row">
-	<div class="col-md-offset-6 col-md-6">					
-		<button type="submit">Logout</button>
+	<div class="col-md-offset-10 col-md-2">					
+		<button type="submit" class="btn btn-primary pull-right">Logout</button>
 	</div>
 	</div>
 </form>
@@ -43,9 +43,9 @@
 </div>
 
 <% if(booking.getBookingTimestamp()==null){ %>
-					No valid booking id! please <a href="/AirportTUM/login">try again</a>
+					<div class="container well">No valid booking id! please <a href="/AirportTUM/login">try again</a></div>
 				<% }else if(booking.getCheckedInOn()!=null){ %>
-					This has already been checked in! <a href="/AirportTUM/login">Check in another booking</a>
+					<div class="container well">This has already been checked in! <a href="/AirportTUM/login">Check in another booking</a></div>
 				<% }else{ %>
 <div class="container well">
 		<table class="table table-striped">
@@ -135,7 +135,8 @@
 
 	<tr>
 				<td class="col-sm-1">
-					<div data-toggle="tooltip" data-placement="top" title="Operated by <%= fst.getFlight().getOperatingAirline().getName() %>"><%= fst.getBookedFlightNumber() %></div>
+					<div data-toggle="tooltip" data-placement="top" title="Operated by <%= fst.getFlight().getOperatingAirline().getName() %>"><%= fst.getBookedFlightNumber() %>
+					<span class="glyphicon glyphicon-plane"></span></div>
 				</td>
 				<td class="col-sm-1">
 					<%= fst.getFlight().getDate() %>

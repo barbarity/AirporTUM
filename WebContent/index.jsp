@@ -22,12 +22,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.14.30/js/bootstrap-datetimepicker.min.js"></script>
 </head>
 <body>
-	<div class="container">
+	<div class="container well">
 		<div class="row">
+		<div class="col-md-6">
      		<form action="search" method="post" class="form-inline">
 	 		<h3>Search connections</h3>
-	 		<div class="form-group">
+	 		<br/>
+	 		</div>
+	 		</div>
+	 		<div class="form-group row">
+	 		<div class="col-md-2">
 	 			<label for="departureCity">From:</label> 
+	 		</div>
+	 		<div class="col-md-6">
 		    	<select id="departureCity" name="departureCity" class="form-control">
 		        	<%for(int i=0;i< cityList.getCityList().size();i++){%>
     				<% CityBean city = cityList.getCityList().get(i); %>
@@ -35,17 +42,25 @@
     				<%}%> 
   				</select>
   			</div>
-  			<div class="form-group">
+  			</div>
+  			<div class="form-group row">
+  			<div class="col-md-2">
 	 			<label for="ariivalCity">To:</label>  
+	 			</div>
+	 			<div class="col-md-6">
   				<select id="arrivalCity" name="arrivalCity" class="form-control">
 		        	<%for(int i=0;i< cityList.getCityList().size();i++){%>
     				<% CityBean city = cityList.getCityList().get(i); %>
     				<option value="<%=city.getId()%>"><%=city.getName()%> (<%=city.getCountryName()%>)</option>
     				<%}%> 
   				</select>
+  				</div>
   			</div>
-	 		<div class="form-group">
+	 		<div class="form-group row">
+	 		<div class="col-md-2">
 	 			<label for="preferredAirline">Airline:</label> 
+	 			</div>
+	 			<div class="col-md-6">
   				<select name="preferredAirline" class="form-control">
     				<option value="">(No airline)</option>
 		        	<%for(int i=0;i< airlineList.getAirlineList().size();i++){%>
@@ -53,31 +68,51 @@
     				<option value="<%=airline.getCode()%>"><%=airline.getName()%> (<%=airline.getCode()%>)</option>
     				<%}%> 
   				</select>
+  				</div>
   			</div>
-  			<div class="form-group">
+  			<div class="form-group row">
+  			<div class="col-md-2">
+	 			<label for="dateFrom">Departure Date:</label> 
+	 		</div>
+  			<div class="col-md-6">
             	<div class="input-group date" id="datetimepickerFrom">
             	    <input type="text" id="dateFrom" name="dateFrom" class="form-control" placeholder="From..." />
             	    <span class="input-group-addon">
                 	    <span class="glyphicon glyphicon-calendar"></span>
             	    </span>
-            	</div>
+            </div>
+            </div>
+            </div>
+            <div class="form-group row">
+            <div class="col-md-2">
+	 			<label for="dateTo">Until:</label> 
+	 		</div>
+            	<div class="col-md-6">
             	<div class="input-group date" id="datetimepickerTo">
                 	<input type="text" id="dateTo" name="dateTo" class="form-control" placeholder="To..." />
                 	<span class="input-group-addon">
                     	<span class="glyphicon glyphicon-calendar"></span>
                 	</span>
             	</div>
+            	</div>
         	</div>
-        	<div class="form-group">
+        	<div class="form-group row">
+        	<div class="col-md-2">
 	 			<label for="className">Class:</label> 
+	 		</div>
+	 		<div class="col-md-6">
   				<select name="className" class="form-control">
     				<option value="economy">Economy</option>
     				<option value="first">First</option>
     				<option value="Business">Business</option>
   				</select>
   			</div>
-  			<div class="form-group">
+  			</div>
+  			<div class="form-group row">
+  			<div class="col-md-2">
 	 			<label for="people">Num. People:</label> 
+	 		</div>
+	 		<div class="col-md-6">
   				<select name="people" class="form-control">
     				<option value="1">1</option>
     				<option value="2">2</option>
@@ -86,8 +121,13 @@
     				<option value="5">5</option>
   				</select>
   			</div>
-  			<div class="form-group">
+  			</div>
+  		
+  			<div class="form-group row">
+  			<div class="col-md-2">
 	 			<label for="currency">Currency:</label> 
+	 		</div>
+	 		<div class="col-md-6">
 		    	<select id="currency" name="currency" class="form-control">
 		        	<%for(int i=0;i< currencyList.getCurrencyList().size();i++){%>
     				<% CurrencyBean currency = currencyList.getCurrencyList().get(i); %>
@@ -95,10 +135,10 @@
     				<%}%> 
   				</select>
   			</div>
-		  <input type="submit" value="Search!" class="btn btn-primary" />
+  			</div>
+		  <button type="submit" value="Search" class="btn btn-primary">Search <span class="glyphicon glyphicon-plane"></span></button>
 		</form>
 		</div>
-	</div>
 	<script type="text/javascript">
     $(function () {
         $("#datetimepickerFrom").datetimepicker({

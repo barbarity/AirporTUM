@@ -52,7 +52,7 @@
 						</div>
 						<div class="row">
 						<div class="col-md-2">
-							<button type="submit" class="btn btn-primary">Submit</button>
+							<button type="submit" class="btn btn-success">Submit <span class="glyphicon glyphicon-plane"></span></button>
 						</div>
 						</div>
 					</form>

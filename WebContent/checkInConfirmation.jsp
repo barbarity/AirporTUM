@@ -23,160 +23,184 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
-logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %>
-	<div class="container">
-		<div class="row">
-				<div class="col-sm-4">
-					Booking #
-				</div>
-				<div class="col-sm-4">
-					<%= booking.getId() %>
-				</div>
-		</div>
-		<div class="row">
-				<div class="col-sm-4">
-					Name
-				</div>
-				<div class="col-sm-4">
-					<%= booking.getPerson().getTitle()%> <%= booking.getPerson().getFirstName()%> <%= booking.getPerson().getLastName() %>
-				</div>
-		</div>
-<div class="row">
-				<div class="col-sm-4">
-					Passport-ID
-				</div>
-				<div class="col-sm-4">
-				     <%= booking.getPerson().getPassportId() %>
-				</div>
-		</div>
-		<div class="row">
-				<div class="col-sm-4">
-					booked At
-				</div>
-				<div class="col-sm-4">
-				     <%= booking.getBookedAtAirline().getName() %>
-				</div>
-		</div>
-		<div class="row">
-				<div class="col-sm-4">
-					booked On
-				</div>
-				<div class="col-sm-4">
-				     <%= booking.getBookingTimestamp() %>
-				</div>
-		</div>
-		<div class="row">
-				<div class="col-sm-4">
-					Price
-				</div>
-				<div class="col-sm-4">
-					<%= booking.getPrice() %> <%= booking.getCurrency().getSymbol() %>
-				</div>
-		</div>
-		
+<div class="container well">
+<div class="row">	
+	<form action="login" method="post">
+	<div class="col-md-offset-6 col-md-6">
+		<input type="hidden" name="logoutUser" value="<%= checkinworker.getEmail() %>" />			
+	<h4 class="pull-right">logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %> </h4>
 	</div>
-	
-	
 	<div class="row">
-				<div class="col-sm-1">
+	<div class="col-md-offset-10 col-md-2">					
+		<button type="submit" class="btn btn-primary pull-right">Logout</button>
+	</div>
+	</div>
+</form>
+</div>
+</div>
+	<div class="container well">
+		<table class="table table-striped">
+		<tr>
+				<td class="col-md-4">
+					Booking ID
+				</td>
+				<td class="col-md-4">
+					<%= booking.getId() %>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-md-4">
+					Name
+				</td>
+				<td class="col-md-4">
+					<%= booking.getPerson().getTitle()%> <%= booking.getPerson().getFirstName()%> <%= booking.getPerson().getLastName() %>
+				</td>
+		</tr>
+<tr>
+				<td class="col-md-4">
+					Passport-ID
+				</td>
+				<td class="col-md-4">
+				     <%= booking.getPerson().getPassportId() %>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-md-4">
+					Booked at
+				</td>
+				<td class="col-md-4">
+				     <%= booking.getBookedAtAirline().getName() %>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-md-4">
+					Booked on
+				</td>
+				<td class="col-md-4">
+				     <%= booking.getBookingTimestamp() %>
+				</td>
+		</tr>
+		<tr>
+				<td class="col-md-4">
+					Price
+
+				</td>
+				<td class="col-md-4">
+					<%= booking.getPrice() %> <%= booking.getCurrency().getSymbol() %>
+				</td>
+		</tr>
+		</table>
+</div>
+	
+	<div class="container well">
+<table class="table table-striped">
+<thead>
+	<tr>
+				<th class="col-md-2">
 					Flight Number
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Departure Date
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Departure Time
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 				    From Airport
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Arrival Time
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 				    To Airport
-				</div>
-		</div>
+				</th>
+		</tr>
+		</thead>
+		<tbody>
 
 <% for (int i=0; i<booking.getFlightSegmentTicketList().size(); i++){ %>
 <% FlightSegmentTicketBean fst = booking.getFlightSegmentTicketList().get(i); %>
-	<div class="row">
-				<div class="col-sm-1">
-					
-					<div data-toggle="tooltip" data-placement="top" title="Operated by <%= fst.getFlight().getOperatingAirline().getName() %>"><%= fst.getBookedFlightNumber() %></div>
-				</div>
-				<div class="col-sm-1">
+
+	<tr>
+				<td class="col-sm-1">
+					<div data-toggle="tooltip" data-placement="top" title="Operated by <%= fst.getFlight().getOperatingAirline().getName() %>"><%= fst.getBookedFlightNumber() %>
+					<span class="glyphicon glyphicon-plane"></span></div>
+				</td>
+				<td class="col-sm-1">
 					<%= fst.getFlight().getDate() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= fst.getFlight().getLocalDepartureTime() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 				    <%= fst.getFlight().getDepartureAirport().getIATA() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= fst.getFlight().getLocalArrivalTime() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 				    <%= fst.getFlight().getArrivalAirport().getIATA() %>
-				</div>
-		</div>
+				</td>
+		</tr>
+		<% } %>
+		</tbody>
+</table>
 
-<% } %>
-
-
-<div class="row">
-				<div class="col-sm-1">
+<table class="table table-striped">
+<thead>
+<tr>
+				<th class="col-md-2">
 					Luggage #
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Weight
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Height
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 				    Width
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Length
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 				    Additional Price
-				</div>
-		</div>
-
+				</th>
+</tr>
+</thead>
+<tbody>
 <% for (int i=0; i<booking.getLuggageList().size(); i++){ %>
 <% LuggageBean luggageItem = booking.getLuggageList().get(i); %>
-	<div class="row">
-				<div class="col-sm-1">
+	<tr>
+				<td class="col-md-2">
 					<%= luggageItem.getId() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getWeight() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getHeight() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getWidth() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getLength() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getAdditionalPrice() %> <%= booking.getCurrency().getSymbol() %>
-				</div>
-				
-		</div>
-
-<% } %>
+				</td>
+	</tr>
+		<% } %>
+		</tbody>
+</table>
 
 
 				
 				
 				<div class="col-sm-2">
-					<a href="/AirportTUM/login">Check in another booking</a>
+					<a href="/AirportTUM/login"><button class="btn btn-success">Check in another booking  <span class="glyphicon glyphicon-plane"></span></button></a>
 				</div>
 
 

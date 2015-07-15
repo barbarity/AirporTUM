@@ -16,26 +16,34 @@
 	<link rel="stylesheet" type="text/css" href="stylesheet2.css">
 </head>
 <body>
-	<div class="container">
+	<div class="container well">
 		<div class="row">
-			<div class="col-sm-7">
-				<div class="row">
+			<div class="col-md-7">
 					<h2>Check-In-Worker Login:</h2>
+					<br/>
+			</div>
+			</div>
 					<form class="form-horizontal" action="login" method="post">
-						<div class="form-group">
+						<div class="form-group row">
+						<div class="col-md-2">
 							<label for="username" class="col-sm-3 control-label">Username</label>
-							<div class="col-sm-9">
+						</div>
+						<div class="col-md-6">
 								<input type="text" class="form-control" name="username" id="username" placeholder="Username...">
-							</div>
 						</div>
-						<div class="form-group">
+						</div>
+						<div class="form-group row">
+						<div class="col-md-2">
 							<label for="password" class="col-sm-3 control-label">Password</label>
-							<div class="col-sm-9">
-								<input type="password" class="form-control" name="password" id="password" placeholder="Password...">
-							</div>
 						</div>
-						<div class="col-sm-offset-3 col-sm-9">
-							<button type="submit" class="btn btn-default">Login</button>
+						<div class="col-md-6">
+							<input type="password" class="form-control" name="password" id="password" placeholder="Password...">
+						</div>
+						</div>
+						<div class="row">
+						<div class="col-sm-9">
+							<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plane"></span>     Login</button>
+						</div>
 						</div>
 					</form>
 				</div>
