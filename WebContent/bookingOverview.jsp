@@ -13,204 +13,244 @@
 
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>AirporTUM</title>
+    <title>Booking Overview</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="stylesheet2.css">
 </head>
-<body>
-logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %> <form action="login" method="post">
-							<input type="hidden" name="logoutUser" value="<%= checkinworker.getEmail() %>" />							
-							<button type="submit">Logout</button>
-				</form>
-				
-				<% if(booking.getBookingTimestamp()==null){ %>
+<body style="background-image:url(A343.jpg)">
+<div class="container well">
+<div class="row">
+	<form action="login" method="post">
+	<div class="col-md-offset-6 col-md-6">
+		<input type="hidden" name="logoutUser" value="<%= checkinworker.getEmail() %>" />			
+	<h4 class="pull-right">logged in as: ID #<%= checkinworker.getId() %> | <%= checkinworker.getEmail() %> </h4>
+	</div>
+	<div class="row">
+	<div class="col-md-offset-6 col-md-6">					
+		<button type="submit">Logout</button>
+	</div>
+	</div>
+</form>
+</div>
+</div>
+
+<% if(booking.getBookingTimestamp()==null){ %>
 					No valid booking id! please <a href="/AirportTUM/login">try again</a>
 				<% }else if(booking.getCheckedInOn()!=null){ %>
 					This has already been checked in! <a href="/AirportTUM/login">Check in another booking</a>
 				<% }else{ %>
-				
-	<div class="container">
-		<div class="row">
-				<div class="col-sm-4">
-					Booking #
-				</div>
-				<div class="col-sm-4">
+<div class="container well">
+		<table class="table table-striped">
+		<tr>
+				<td class="col-md-4">
+					Booking ID
+				</td>
+				<td class="col-md-4">
 					<%= booking.getId() %>
-				</div>
-		</div>
-		<div class="row">
-				<div class="col-sm-4">
+				</td>
+		</tr>
+		<tr>
+				<td class="col-md-4">
 					Name
-				</div>
-				<div class="col-sm-4">
+				</td>
+				<td class="col-md-4">
 					<%= booking.getPerson().getTitle()%> <%= booking.getPerson().getFirstName()%> <%= booking.getPerson().getLastName() %>
-				</div>
-		</div>
-<div class="row">
-				<div class="col-sm-4">
+				</td>
+		</tr>
+<tr>
+				<td class="col-md-4">
 					Passport-ID
-				</div>
-				<div class="col-sm-4">
+				</td>
+				<td class="col-md-4">
 				     <%= booking.getPerson().getPassportId() %>
-				</div>
-		</div>
-		<div class="row">
-				<div class="col-sm-4">
-					booked At
-				</div>
-				<div class="col-sm-4">
+				</td>
+		</tr>
+		<tr>
+				<td class="col-md-4">
+					Booked at
+				</td>
+				<td class="col-md-4">
 				     <%= booking.getBookedAtAirline().getName() %>
-				</div>
-		</div>
-		<div class="row">
-				<div class="col-sm-4">
-					booked On
-				</div>
-				<div class="col-sm-4">
+				</td>
+		</tr>
+		<tr>
+				<td class="col-md-4">
+					Booked on
+				</td>
+				<td class="col-md-4">
 				     <%= booking.getBookingTimestamp() %>
-				</div>
-		</div>
-		<div class="row">
-				<div class="col-sm-4">
+				</td>
+		</tr>
+		<tr>
+				<td class="col-md-4">
 					Price
-				</div>
-				<div class="col-sm-4">
+
+				</td>
+				<td class="col-md-4">
 					<%= booking.getPrice() %> <%= booking.getCurrency().getSymbol() %>
-				</div>
-		</div>
+				</td>
+		</tr>
+		</table>
+</div>
 		
-	</div>
+
+
 	
-	
-	<div class="row">
-				<div class="col-sm-1">
+<div class="container well">
+<table class="table table-striped">
+<thead>
+	<tr>
+				<th class="col-md-2">
 					Flight Number
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Departure Date
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Departure Time
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 				    From Airport
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Arrival Time
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 				    To Airport
-				</div>
-		</div>
+				</th>
+		</tr>
+		</thead>
+		<tbody>
 
 <% for (int i=0; i<booking.getFlightSegmentTicketList().size(); i++){ %>
 <% FlightSegmentTicketBean fst = booking.getFlightSegmentTicketList().get(i); %>
-	<div class="row">
-				<div class="col-sm-1">
+
+	<tr>
+				<td class="col-sm-1">
 					<div data-toggle="tooltip" data-placement="top" title="Operated by <%= fst.getFlight().getOperatingAirline().getName() %>"><%= fst.getBookedFlightNumber() %></div>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-sm-1">
 					<%= fst.getFlight().getDate() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= fst.getFlight().getLocalDepartureTime() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 				    <%= fst.getFlight().getDepartureAirport().getIATA() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= fst.getFlight().getLocalArrivalTime() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 				    <%= fst.getFlight().getArrivalAirport().getIATA() %>
-				</div>
-		</div>
+				</td>
+		</tr>
+		<% } %>
+		</tbody>
+</table>
 
-<% } %>
 
-
-<div class="row">
-				<div class="col-sm-1">
+<table class="table table-striped">
+<thead>
+<tr>
+				<th class="col-md-2">
 					Luggage #
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Weight
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Height
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 				    Width
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 					Length
-				</div>
-				<div class="col-sm-1">
+				</th>
+				<th class="col-md-2">
 				    Additional Price
-				</div>
-		</div>
-
+				</th>
+</tr>
+</thead>
+<tbody>
 <% for (int i=0; i<booking.getLuggageList().size(); i++){ %>
 <% LuggageBean luggageItem = booking.getLuggageList().get(i); %>
-	<div class="row">
-				<div class="col-sm-1">
+	<tr>
+				<td class="col-md-2">
 					<%= luggageItem.getId() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getWeight() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getHeight() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getWidth() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getLength() %>
-				</div>
-				<div class="col-sm-1">
+				</td>
+				<td class="col-md-2">
 					<%= luggageItem.getAdditionalPrice() %> <%= booking.getCurrency().getSymbol() %>
-				</div>
-				<div class="col-sm-1">
-				<form action="bookingOverview" method="post">
-							<input type="hidden" name="edit" value="<%= luggageItem.getId() %>" />
-							<button type="submit">Edit</button>
-				</form>
+				</td>
+	</tr>
+		<tr>
+		<td class="col-md-2">
 				<form action="bookingOverview" method="post">
 							<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
 							<input type="hidden" name="deleteLuggage" value="<%= luggageItem.getId() %>" />
-							<button type="submit">Delete</button>
+							<button type="submit" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Delete</button>
 				</form>
-				</div>
-		</div>
-
-<% } %>
-
-<form action="bookingOverview" method="post">
-							<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
-							<input type="hidden" name="rollback" value="<%= 1 %>" />
-							<button type="submit">Rollback</button>
-				</form>
-				
+				</td>
+				<td class="col-md-2">
 				<form action="bookingOverview" method="post">
-							<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
-							<input type="hidden" name="addNewLuggage" value="<%= 1 %>" />
-							<button type="submit">Add new Luggage Item</button>
+							<input type="hidden" name="edit" value="<%= luggageItem.getId() %>" />
+						<button type="submit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-pencil"></span> Edit</button>
 				</form>
+				</td>
 				
-				
-				<div class="col-sm-2">
-					<form action="bookingOverview" method="post">	
-						<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
-						<input type="hidden" name="commit" value="<%= 1 %>" />
-						<button type="submit">Finish check-in</button>
-					</form>
-				</div>
+
+		</tr>
+		<% } %>
+		</tbody>
+</table>
+
+</div>
+<div class="container well">
+	<div class="row">
+	<div class="col-md-2">
+	<form action="bookingOverview" method="post">
+			<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
+			<input type="hidden" name="rollback" value="<%= 1 %>" />
+			<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span> Undo changes</button>
+	</form>
+	</div>
+	<div class="col-md-2">
+	<form action="bookingOverview" method="post">
+			<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
+			<input type="hidden" name="addNewLuggage" value="<%= 1 %>" />
+			<button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Add Luggage</button>
+	</form>
+	</div>
+	<div class="col-md-2">
+		<form action="bookingOverview" method="post">	
+			<input type="hidden" name="bookingid" value="<%= booking.getId() %>" />							
+			<input type="hidden" name="commit" value="<%= 1 %>" />
+			<button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Finish check-in</button>
+		</form>
+	</div>
+	</div>
+</div>
 
 				<% } %>
 
