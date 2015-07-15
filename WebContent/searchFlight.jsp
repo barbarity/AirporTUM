@@ -70,8 +70,8 @@
 									<% for (int j = 0; j < connectionList.getConnectionList().get(i).getFlightList().size(); j++) { %>
 									<input type="hidden" name="flights" value="<%= connectionList.getConnectionList().get(i).getFlightList().get(j).getFlightId() %>" />
 									<% } %>
-									<input type="hidden" name="peopleLeft" value="<%= request.getParameter("people") %>" />
-									<input type="hidden" name="className" value="<%= request.getParameter("className") %>" />
+									<input type="hidden" name="peopleLeft" value="<%= request.getAttribute("peopleLeft") %>" />
+									<input type="hidden" name="className" value="<%= request.getAttribute("className") %>" />
 									<input type="hidden" name="currency" value="" />
 									<button type="submit" class="btn btn-primary">Book</button>
 								</form>

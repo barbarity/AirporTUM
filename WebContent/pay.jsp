@@ -2,21 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@page import="de.tum.in.dbpra.model.bean.CityBean"%>
 <%@page import="de.tum.in.dbpra.model.bean.AirlineBean"%>
-<%@page import="de.tum.in.dbpra.model.bean.ConnectionBean"%>
+<%@page import="de.tum.in.dbpra.model.bean.FlightBean"%>
+<%@page import="de.tum.in.dbpra.model.bean.PersonBean"%>
+<%@page import="java.util.ArrayList"%>
 
-<jsp:useBean id="connectionList" scope="request"
-	class="de.tum.in.dbpra.model.bean.ConnectionListBean" />
-<jsp:useBean id="cityList" scope="request"
-	class="de.tum.in.dbpra.model.bean.CityListBean" />
-<jsp:useBean id="departureCity" scope="request"
-	class="de.tum.in.dbpra.model.bean.CityBean" />
-<jsp:useBean id="arrivalCity" scope="request"
-	class="de.tum.in.dbpra.model.bean.CityBean" />
-<jsp:useBean id="airlineList" scope="request"
-	class="de.tum.in.dbpra.model.bean.AirlineListBean" />
-<jsp:useBean id="preferredAirline" scope="request"
-	class="de.tum.in.dbpra.model.bean.AirlineBean" />
-
+<jsp:useBean id="connectionBean" scope="request"
+	class="de.tum.in.dbpra.model.bean.ConnectionBean" />
+<%
+	ArrayList<PersonBean> people = (ArrayList<PersonBean>) request.getAttribute("people");
+%>
 
 <!DOCTYPE html>
 <html>
@@ -37,27 +31,36 @@
 			<div class="col-sm-7">
 				<div class="row">
 					<h2>Login:</h2>
-					<form class="form-horizontal" action="login" method="post">
+					<form class="form-horizontal" action="pay" method="post">
 						<div class="form-group">
 							<label for="username" class="col-sm-3 control-label">Username</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" name="username" id="username" placeholder="Username...">
+								<input type="text" class="form-control" name="emailLogin" id="emailLogin" placeholder="Email...">
 							</div>
 						</div>
 						<div class="form-group">
 							<label for="password" class="col-sm-3 control-label">Password</label>
 							<div class="col-sm-9">
-								<input type="password" class="form-control" name="password" id="password" placeholder="Password...">
+								<input type="password" class="form-control" name="passwordLogin" id="passwordLogin" placeholder="Password...">
 							</div>
 						</div>
 						<div class="col-sm-offset-3 col-sm-9">
 							<button type="submit"  name="login" class="btn btn-default">Login</button>
 						</div>
+						<% for (int j = 0; j < connectionBean.getFlightList().size(); j++) { %>
+						<input type="hidden" name="flights" value="<%= connectionBean.getFlightList().get(j).getFlightId() %>" />
+						<% } %>
+						<input type="hidden" name="peopleLeft" value="<%= request.getAttribute("peopleLeft") %>" />
+						<% for (int j = 0; j < people.size(); j++) { %>
+						<input type="hidden" name="people" value="<%= people.get(j).getId() %>" />
+						<% } %>
+						<input type="hidden" name="className" value="<%= request.getAttribute("className") %>" />
+						<input type="hidden" name="currency" value="" />
 					</form>
 				</div>
 				<div class="row">
 					<h2>...or Register:</h2>
-					<form class="form-horizontal" action="register">
+					<form class="form-horizontal" action="pay">
 						<div class="form-group">
 							<label for="username">Username</label>
 							<input type="text" class="form-control" name="username" id="username" placeholder="Username...">
@@ -115,12 +118,38 @@
 							<label for="phone">Phone</label>
 							<input type="tel" class="form-control" name="phone" id="phone" placeholder="Phone...">
 						</div>
+						<% for (int i = 0; i < people.size(); i++) { %>
+							<input type="hidden" name="people" value="<%= people.get(i).getId() %>" />
+						<% } %>
+						<input type="hidden" name="peopleLeft" value="<%= request.getAttribute("peopleLeft") %>" />
+						<input type="hidden" name="currency" value="" />
+						<% for (int i = 0; i < people.size(); i++) { %>
+							<input type="hidden" name="people" value="<%= people.get(i).getId() %>" />
+						<% } %>
+						<input type="hidden" name="className" value="<%= request.getAttribute("className") %>" />
 						<button type="submit" name="register" class="btn btn-default">Register</button>
 					</form>
 				</div>
 			</div>
 			<div class="col-sm-5">
-				Ticket about the flight goes here...
+			People:
+				<table class="table table-condensed">
+					<thead>
+						<tr>
+							<th>Name:</th>
+							<th>E-mail:</th>
+						</tr>
+					</thead>
+					<tbody>
+					<% for (int i = 0; i < people.size(); i++) { %>
+						<tr>
+							<td><%= people.get(i).getFirstName() %><%= people.get(i).getLastName() %></td>
+							<td><%= people.get(i).getEmail() %>
+						</tr>
+					<% } %>
+						
+					</tbody>
+				</table>
 			</div>
 		</div>
 		<script type="text/javascript">

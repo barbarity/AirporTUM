@@ -46,47 +46,49 @@ public class PayServlet extends HttpServlet {
 					people.add(person);
 				}
 				
-				if (request.getParameter("login") != null) {
-					// Login User
-					String email = request.getParameter("email");
-					String password = request.getParameter("password");
-					
-					try {
-						personDAO.getPerson(email, personDAO.getSha256Hash(email, password));
-						
-						// Success
-						peopleLeft--;
-						
-					} catch (SQLException e) {
-						// TODO: Set an error message to show in the page
-					}
-				} else if (request.getParameter("register") != null) {
-					String passportId = request.getParameter("passportId");
-					String email = request.getParameter("email");
-					String password = request.getParameter("password");
-					String repeatPassword = request.getParameter("repeatPassword");
-					String title = request.getParameter("title");
-					String firstName = request.getParameter("firstName");
-					String lastName = request.getParameter("lastName");
-					String birthDate = request.getParameter("birthDate");
-					String phone = request.getParameter("phone");
-					String gender = request.getParameter("gender");
-					String address = request.getParameter("address");
-					
-					SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-					
-					try {
-						PersonBean person = personDAO.addNewPerson(firstName, lastName, passportId, gender, title, address, email, phone, new Date(formatter.parse(birthDate).getTime()), repeatPassword, "salt");
-						
-						peopleLeft--;
-						people.add(person);
-						
-					} catch (PersonNotFoundException e) {
-						// TODO: Set an error message
-					}
-				}
+				
 			} catch (Throwable e) {
 				// It does not exist yet people
+			}
+			if (request.getParameter("login") != null) {
+				// Login User
+				String email = request.getParameter("emailLogin");
+				String password = request.getParameter("passwordLogin");
+				
+				try {
+					PersonBean person = personDAO.getPerson(email, personDAO.getSha256Hash(email, password));
+					
+					// Success
+					peopleLeft--;
+					people.add(person);
+					
+				} catch (SQLException e) {
+					// TODO: Set an error message to show in the page
+				}
+			} else if (request.getParameter("register") != null) {
+				String passportId = request.getParameter("passportId");
+				String email = request.getParameter("email");
+				String password = request.getParameter("password");
+				String repeatPassword = request.getParameter("repeatPassword");
+				String title = request.getParameter("title");
+				String firstName = request.getParameter("firstName");
+				String lastName = request.getParameter("lastName");
+				String birthDate = request.getParameter("birthDate");
+				String phone = request.getParameter("phone");
+				String gender = request.getParameter("gender");
+				String address = request.getParameter("address");
+				
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+				
+				try {
+					PersonBean person = personDAO.addNewPerson(firstName, lastName, passportId, gender, title, address, email, phone, new Date(formatter.parse(birthDate).getTime()), repeatPassword, "salt");
+					
+					peopleLeft--;
+					people.add(person);
+					
+				} catch (PersonNotFoundException e) {
+					// TODO: Set an error message
+				}
 			}
 			
 			ArrayList<FlightBean> flights = new ArrayList<FlightBean>();
@@ -109,9 +111,12 @@ public class PayServlet extends HttpServlet {
 			request.setAttribute("connectionBean", connectionBean);
 			
 			request.setAttribute("people", people);
+			request.setAttribute("peopleLeft", peopleLeft);
+			request.setAttribute("className", request.getParameter("className"));
 			
 			if (peopleLeft == 0) {
-				
+				RequestDispatcher dispatcher = request.getRequestDispatcher("/confirmBooking.jsp");
+				dispatcher.forward(request, response);
 			} else {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("/pay.jsp");
 				dispatcher.forward(request, response);

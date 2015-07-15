@@ -62,7 +62,8 @@ public class SearchServlet extends HttpServlet {
 			ConnectionListBean connectionList = connectionDAO.getConnections(dateFrom, dateTo, departureCity, arrivalCity, "economy", currency, people);
 			
 			request.setAttribute("connectionList", connectionList);
-			request.setAttribute("people", people);
+			request.setAttribute("peopleLeft", people);
+			request.setAttribute("className", className);
 		
 		} catch(Throwable e){
     		request.setAttribute("error", e.getMessage());

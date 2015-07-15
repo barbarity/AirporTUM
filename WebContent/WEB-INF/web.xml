@@ -53,4 +53,12 @@
 		<servlet-name>BookingOverviewServlet</servlet-name>
 		<url-pattern>/bookingOverview</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>ConfirmServlet</servlet-name>
+		<servlet-class>de.tum.in.dbpra.ConfirmServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ConfirmServlet</servlet-name>
+		<url-pattern>/confirm</url-pattern>
+	</servlet-mapping>
 </web-app>
