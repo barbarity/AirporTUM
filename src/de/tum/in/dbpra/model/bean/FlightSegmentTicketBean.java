@@ -13,7 +13,6 @@ public class FlightSegmentTicketBean {
 	private String travelClass;
 	private String bookedFlightNumber;
 
-
 	public int getId() {
 		return id;
 	}
@@ -21,7 +20,7 @@ public class FlightSegmentTicketBean {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public FlightBean getFlight() {
 		return flight;
 	}
@@ -45,7 +44,7 @@ public class FlightSegmentTicketBean {
 	public void setSeatNr(int seatNr) {
 		this.seatNr = seatNr;
 	}
-	
+
 	public BigDecimal getPrice() {
 		return price;
 	}
@@ -53,7 +52,7 @@ public class FlightSegmentTicketBean {
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-	
+
 	public CurrencyBean getCurrency() {
 		return currency;
 	}
@@ -61,7 +60,7 @@ public class FlightSegmentTicketBean {
 	public void setCurrency(CurrencyBean currency) {
 		this.currency = currency;
 	}
-	
+
 	public String getTravelClass() {
 		return travelClass;
 	}
@@ -69,7 +68,7 @@ public class FlightSegmentTicketBean {
 	public void setTravelClass(String travelClass) {
 		this.travelClass = travelClass;
 	}
-	
+
 	public String getBookedFlightNumber() {
 		return bookedFlightNumber;
 	}
@@ -77,5 +76,5 @@ public class FlightSegmentTicketBean {
 	public void setBookedFlightNumber(String bookedFlightNumber) {
 		this.bookedFlightNumber = bookedFlightNumber;
 	}
-	
+
 }

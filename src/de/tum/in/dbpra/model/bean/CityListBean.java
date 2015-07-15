@@ -11,9 +11,9 @@ public class CityListBean {
 	}
 
 	public void setCityList(ArrayList<CityBean> cityList) {
-		this.cityList=cityList;
+		this.cityList = cityList;
 	}
-	
+
 	public void addCityToList(CityBean city) {
 		cityList.add(city);
 	}

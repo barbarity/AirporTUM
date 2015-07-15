@@ -2,7 +2,7 @@ package de.tum.in.dbpra.model.bean;
 
 import java.math.BigDecimal;
 
-public class LuggageBean{
+public class LuggageBean {
 
 	private int id;
 	private int bookingId;
@@ -13,73 +13,68 @@ public class LuggageBean{
 	private BigDecimal additionalPrice;
 	private boolean registeredAtBooking;
 
-
-	
-
-
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
-		this.id=id;
+		this.id = id;
 	}
-	
+
 	public int getBookingId() {
 		return bookingId;
 	}
 
 	public void setBookingId(int bookingId) {
-		this.bookingId=bookingId;
+		this.bookingId = bookingId;
 	}
-	
+
 	public int getWeight() {
 		return weight;
 	}
 
 	public void setWeight(int weight) {
-		this.weight=weight;
+		this.weight = weight;
 	}
-	
+
 	public int getHeight() {
 		return height;
 	}
 
 	public void setHeight(int height) {
-		this.height=height;
+		this.height = height;
 	}
-	
+
 	public int getWidth() {
 		return width;
 	}
 
 	public void setWidth(int width) {
-		this.width=width;
+		this.width = width;
 	}
-	
+
 	public int getLength() {
 		return length;
 	}
 
 	public void setLength(int length) {
-		this.length=length;
+		this.length = length;
 	}
-	
+
 	public BigDecimal getAdditionalPrice() {
 		return additionalPrice;
 	}
 
 	public void setAdditionalPrice(BigDecimal additionalPrice) {
-		this.additionalPrice=additionalPrice;
+		this.additionalPrice = additionalPrice;
 	}
-	
+
 	public boolean getRegisteredAtBooking() {
 		return registeredAtBooking;
 	}
 
 	public void setRegisteredAtBooking(boolean registeredAtBooking) {
-		this.registeredAtBooking=registeredAtBooking;
+		this.registeredAtBooking = registeredAtBooking;
 	}
-	
-	
+
 }

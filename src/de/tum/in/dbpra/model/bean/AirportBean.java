@@ -10,7 +10,7 @@ public class AirportBean {
 	}
 
 	public void setIATA(String iata) {
-		this.iata=iata;
+		this.iata = iata;
 	}
 
 	public String getName() {
@@ -21,4 +21,3 @@ public class AirportBean {
 		this.name = name;
 	}
 }
-

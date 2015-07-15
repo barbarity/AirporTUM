@@ -15,7 +15,7 @@ public class BookingBean {
 	private AirlineBean bookedAtAirline;
 	private Date bookingTimestamp;
 	private Date checkedInOn;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -28,7 +28,8 @@ public class BookingBean {
 		return flightSegmentTicketList;
 	}
 
-	public void setFlightSegmentTicketList(ArrayList<FlightSegmentTicketBean> flightSegmentTicketList) {
+	public void setFlightSegmentTicketList(
+			ArrayList<FlightSegmentTicketBean> flightSegmentTicketList) {
 		this.flightSegmentTicketList = flightSegmentTicketList;
 	}
 
@@ -39,7 +40,7 @@ public class BookingBean {
 	public void setPerson(PersonBean person) {
 		this.person = person;
 	}
-	
+
 	public BigDecimal getPrice() {
 		return price;
 	}
@@ -47,7 +48,7 @@ public class BookingBean {
 	public void setPrice(BigDecimal price) {
 		this.price = price;
 	}
-	
+
 	public CurrencyBean getCurrency() {
 		return currency;
 	}
@@ -55,7 +56,7 @@ public class BookingBean {
 	public void setCurrency(CurrencyBean currency) {
 		this.currency = currency;
 	}
-	
+
 	public ArrayList<LuggageBean> getLuggageList() {
 		return luggageList;
 	}
@@ -63,7 +64,7 @@ public class BookingBean {
 	public void setLuggageList(ArrayList<LuggageBean> luggageList) {
 		this.luggageList = luggageList;
 	}
-	
+
 	public AirlineBean getBookedAtAirline() {
 		return bookedAtAirline;
 	}
@@ -71,21 +72,21 @@ public class BookingBean {
 	public void setBookedAtAirline(AirlineBean bookedAtAirline) {
 		this.bookedAtAirline = bookedAtAirline;
 	}
-		
-	public Date getBookingTimestamp(){
+
+	public Date getBookingTimestamp() {
 		return bookingTimestamp;
 	}
-	
-	public void setBookingTimestamp(Date bookingTimestamp){
+
+	public void setBookingTimestamp(Date bookingTimestamp) {
 		this.bookingTimestamp = bookingTimestamp;
 	}
-	
-	public Date getCheckedInOn(){
+
+	public Date getCheckedInOn() {
 		return checkedInOn;
 	}
-	
-	public void setCheckedInOn(Date checkedInOn){
+
+	public void setCheckedInOn(Date checkedInOn) {
 		this.checkedInOn = checkedInOn;
 	}
-	
+
 }

@@ -11,6 +11,6 @@ public class BookingListBean {
 	}
 
 	public void setBookingList(ArrayList<BookingBean> bookingList) {
-		this.bookingList=bookingList;
+		this.bookingList = bookingList;
 	}
 }

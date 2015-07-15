@@ -1,4 +1,5 @@
 package de.tum.in.dbpra.model.bean;
+
 import java.util.ArrayList;
 
 public class AirlineListBean {
@@ -10,9 +11,9 @@ public class AirlineListBean {
 	}
 
 	public void setAirlineList(ArrayList<AirlineBean> airlineList) {
-		this.airlineList=airlineList;
+		this.airlineList = airlineList;
 	}
-	
+
 	public void addAirlineToList(AirlineBean airline) {
 		airlineList.add(airline);
 	}

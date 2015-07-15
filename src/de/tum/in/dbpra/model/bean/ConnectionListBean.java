@@ -11,6 +11,6 @@ public class ConnectionListBean {
 	}
 
 	public void setConnectionList(ArrayList<ConnectionBean> connectionList) {
-		this.connectionList=connectionList;
+		this.connectionList = connectionList;
 	}
 }

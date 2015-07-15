@@ -13,7 +13,6 @@ import de.tum.in.dbpra.model.bean.PersonBean;
 
 public class PersonDAO extends AbstractDAO {
 
-	
 	public PersonBean getPersonById(PersonBean person) throws PersonNotFoundException, SQLException {
 		
 		String query = "SELECT 	person_id, firstName, lastName, passportId, gender, title, address, email, phone, birthdate, password, salt from person where person_id = ?";

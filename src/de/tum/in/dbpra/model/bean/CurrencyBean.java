@@ -14,7 +14,7 @@ public class CurrencyBean {
 	}
 
 	public void setCurrencyCode(String currencyCode) {
-		this.currencyCode=currencyCode;
+		this.currencyCode = currencyCode;
 	}
 
 	public String getName() {
@@ -24,7 +24,7 @@ public class CurrencyBean {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getSymbol() {
 		return symbol;
 	}
@@ -32,7 +32,7 @@ public class CurrencyBean {
 	public void setSymbol(String symbol) {
 		this.symbol = symbol;
 	}
-	
+
 	public BigDecimal getPriceInDollar() {
 		return priceInDollar;
 	}
@@ -41,4 +41,3 @@ public class CurrencyBean {
 		this.priceInDollar = priceInDollar;
 	}
 }
-

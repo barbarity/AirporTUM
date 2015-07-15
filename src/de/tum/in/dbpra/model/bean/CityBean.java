@@ -6,8 +6,8 @@ public class CityBean {
 	private String name;
 	private String countryName;
 
-	public CityBean(){
-		id=-1;
+	public CityBean() {
+		id = -1;
 	}
 
 	public int getId() {
@@ -15,22 +15,22 @@ public class CityBean {
 	}
 
 	public void setId(int id) {
-		this.id=id;
+		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
 
 	public void setName(String name) {
-		this.name=name;
+		this.name = name;
 	}
-	
+
 	public String getCountryName() {
 		return countryName;
 	}
 
 	public void setCountryName(String countryName) {
-		this.countryName=countryName;
+		this.countryName = countryName;
 	}
 }

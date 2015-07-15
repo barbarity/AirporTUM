@@ -10,7 +10,6 @@ import de.tum.in.dbpra.model.bean.BookingBean;
 import de.tum.in.dbpra.model.bean.FlightSegmentTicketBean;
 import de.tum.in.dbpra.model.bean.FoodTypeBean;
 import de.tum.in.dbpra.model.bean.FlightBean;
-import de.tum.in.dbpra.model.bean.CurrencyBean;
 
 
 public class FlightSegmentTicketDAO extends AbstractDAO {

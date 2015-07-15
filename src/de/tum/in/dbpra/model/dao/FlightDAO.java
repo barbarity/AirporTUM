@@ -4,10 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
+import de.tum.in.dbpra.model.bean.CurrencyBean;
 import de.tum.in.dbpra.model.bean.FlightBean;
 import de.tum.in.dbpra.model.bean.CityBean;
 import de.tum.in.dbpra.model.bean.AirportBean;
@@ -353,5 +355,85 @@ public class FlightDAO extends AbstractDAO {
 		FlightNotFoundException(String message){
 			super(message);
 		}
+	}
+
+
+
+	public ArrayList<FlightBean> getValidFlightsFrom (AirportBean departureAirport, Time dateFrom, Time dateTo,
+			String flightClass, CurrencyBean currency, int seats) {
+		ArrayList<FlightBean> flights = new ArrayList<FlightBean>();
+		
+		String query = "with takenseats as (select fl.flight_id as fl,  coalesce(count(fst.fst_id),0) as seats from Airplane ap, Flight fl left outer join (select * from FlightSegmentTicket where class='economy') fst on (fst.flight_id=fl.flight_id) where ap.registration_num=fl.airplane_registration_num  group by fl.flight_id)" +
+			"select *,f.date+r.departureTime+r.duration-cend.timezone as locArrTime,f.date+r.departureTime-cstart.timezone as locDepTime from Flight f, Route r, City cstart, City cend, Airport astart, Airport aend, takenseats fs, Airplane ap, Airline a where departure_iata=? "+
+			"and f.date+(r.departureTime+r.duration)-cstart.timezone<=? and f.date+r.departureTime-cstart.timezone>=? and astart.iata=r.departure_iata and aend.iata=arrival_iata and " +
+			"aend.city_id=cend.city_id and astart.city_id=cstart.city_id and f.route_id=r.route_id and fs.fl=f.flight_id and ap.businessClassSeats-seats>=? and ap.registration_num=f.airplane_registration_num  and r.airline_code=a.code";
+
+		try {
+			// Get connection
+			Connection con = getConnection();
+			
+			// Satinize statement
+			PreparedStatement prep = con.prepareStatement(query);
+            //prep.setString(1, flightClass);
+            prep.setString(1, departureAirport.getIATA());
+            prep.setTimestamp(2, new Timestamp(dateTo.getTime()));
+            prep.setTimestamp(3, new Timestamp(dateFrom.getTime()));
+            prep.setInt(4, seats);
+            
+            try {
+            	// Execute Query
+                ResultSet rs = prep.executeQuery();
+                
+                while(rs.next()){
+                    FlightBean flight = new FlightBean();
+                    flight.setFlightId(rs.getInt(1));
+                    flight.setRouteId(rs.getInt(2));
+                    flight.setDate(rs.getDate(4));
+                    flight.setLocalDepartureTime(rs.getTime("locDepTime"));
+                    flight.setLocalArrivalTime(rs.getTime("locArrTime"));
+                    flight.setDuration(rs.getTime(15));
+                    flight.setGateNr(rs.getString(7));
+                    
+                    AirlineBean airline = new AirlineBean();
+                    airline.setCode(rs.getString(42));
+                    airline.setName(rs.getString(44));
+                    flight.setOperatingAirline(airline);
+                    
+                    departureAirport = new AirportBean();
+                    departureAirport.setIATA(rs.getString(28));
+                    departureAirport.setName(rs.getString(29));
+                    flight.setDepartureAirport(departureAirport);
+                    
+                    AirportBean arrivalAirport = new AirportBean();
+                    arrivalAirport.setIATA(rs.getString(31));
+                    arrivalAirport.setName(rs.getString(32));
+                    flight.setArrivalAirport(arrivalAirport);
+                    
+                    CityBean departureCity = new CityBean();
+                    departureCity.setId(rs.getInt(18));
+                    departureCity.setName(rs.getString(21));
+                    departureCity.setCountryName(rs.getString(19));
+                    flight.setDepartureCity(departureCity);
+
+                    CityBean arrivalCity = new CityBean();
+                    arrivalCity.setId(rs.getInt(23));
+                    arrivalCity.setName(rs.getString(26));
+                    arrivalCity.setCountryName(rs.getString(24));
+                    flight.setArrivalCity(arrivalCity);
+                    
+                    flight.setDistance(rs.getInt(17));
+                    flight.setOperatingFlightNumber(rs.getString(12));
+                    flight.setTravelClass(flightClass);
+                    flight.setPrice(new BigDecimal(0.00));
+                    flights.add(flight);    
+                }
+            } catch (Throwable e) {
+            	e.printStackTrace();
+            }
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
+		
+		return flights;
 	}
 }

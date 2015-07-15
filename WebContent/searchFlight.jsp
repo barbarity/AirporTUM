@@ -1,6 +1,7 @@
 <%@page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="java.text.DecimalFormat"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="de.tum.in.dbpra.model.bean.CityBean"%>
 <%@page import="de.tum.in.dbpra.model.bean.AirlineBean"%>
 <%@page import="de.tum.in.dbpra.model.bean.FlightBean"%>
@@ -31,7 +32,8 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 </head>
 <body>
-<%  DecimalFormat myFormatter = new DecimalFormat("###,###.00"); %>
+<%  DecimalFormat myFormatter = new DecimalFormat("###,###.00");
+	SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm"); %>
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-10">
@@ -52,11 +54,11 @@
 					<tbody>
 						<% for (FlightBean currentFlight: currentConnection.getFlightList()) { %>
 						<tr>
-							<td><%= currentFlight.getOperatingAirline() %></td>
-							<td><%= currentFlight.getLocalDepartureTime().toString() %> <%= currentFlight.getDepartureCity().getName() %></td>
+							<td><%= currentFlight.getOperatingAirline().getName() %>ss</td>
+							<td><%= dateFormat.format(currentFlight.getLocalDepartureTime()) %> <%= currentFlight.getDepartureCity().getName() %></td>
 							<td class="text-center"><span class="glyphicon glyphicon-arrow-right"></span></td>
-							<td class="text-right"><%= currentFlight.getLocalArrivalTime().toString() %> <%= currentFlight.getArrivalCity().getName() %></td>
-							<td class="text-right"><%= currentFlight.getDuration() %> h</td>
+							<td class="text-right"><%= dateFormat.format(currentFlight.getLocalArrivalTime()) %> <%= currentFlight.getArrivalCity().getName() %></td>
+							<td class="text-right"><%= dateFormat.format(currentFlight.getDuration()) %> h</td>
 							<td class="text-right"><%= myFormatter.format(currentFlight.getPrice()) %> <%= currentConnection.getCurrency().getSymbol() %></td>
 						</tr>
 						<% } %>
@@ -66,7 +68,7 @@
 							<td colspan="6" class="text-right">
 								<form action="pay" method="post">
 									<% for (int j = 0; j < connectionList.getConnectionList().get(i).getFlightList().size(); j++) { %>
-									<input type="hidden" name="flights[]" value="<%= connectionList.getConnectionList().get(i).getFlightList().get(j).getFlightId() %>" />
+									<input type="hidden" name="flights" value="<%= connectionList.getConnectionList().get(i).getFlightList().get(j).getFlightId() %>" />
 									<% } %>
 									<input type="hidden" name="peopleLeft" value="<%= request.getParameter("people") %>" />
 									<input type="hidden" name="className" value="<%= request.getParameter("className") %>" />

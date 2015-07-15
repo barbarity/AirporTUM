@@ -10,7 +10,7 @@ public class FoodTypeBean {
 	}
 
 	public void setCateringCode(String cateringCode) {
-		this.cateringCode=cateringCode;
+		this.cateringCode = cateringCode;
 	}
 
 	public String getName() {
@@ -21,4 +21,3 @@ public class FoodTypeBean {
 		this.name = name;
 	}
 }
-

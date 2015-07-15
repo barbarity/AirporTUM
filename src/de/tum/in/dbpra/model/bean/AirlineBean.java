@@ -10,7 +10,7 @@ public class AirlineBean {
 	}
 
 	public void setCode(String code) {
-		this.code=code;
+		this.code = code;
 	}
 
 	public String getName() {
@@ -21,4 +21,3 @@ public class AirlineBean {
 		this.name = name;
 	}
 }
-
